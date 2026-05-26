@@ -18,6 +18,7 @@ class MainHome extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(vertical: 12.h,horizontal: 18.w),
         child: GNav(
+          selectedIndex: 3,
           rippleColor:
               AppColors.kPrimaryColor, 
           hoverColor: AppColors.kPrimaryColor, 
