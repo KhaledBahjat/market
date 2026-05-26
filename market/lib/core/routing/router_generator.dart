@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:market/core/routing/app_routs.dart';
+import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
 import 'package:market/features/auth/ui/sign_up.dart';
 
@@ -17,6 +18,11 @@ class RouterGenerator {
         name: AppRouts.signUpScreen,
         builder: (context, state) => SignUp(),
       ),
+      GoRoute(
+        name: AppRouts.forgetPasswordScreen,
+        path: AppRouts.forgetPasswordScreen,
+        builder: (context, state) => ForgetPassword()
+      )
     ],
   );
 }

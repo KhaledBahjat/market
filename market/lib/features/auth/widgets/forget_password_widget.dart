@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class ForgetPasswordWidget extends StatelessWidget {
@@ -19,8 +21,7 @@ class ForgetPasswordWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: () {
-          },
+          onPressed: ()=>GoRouter.of(context).go(AppRouts.forgetPasswordScreen),
         ),
       ],
     );
