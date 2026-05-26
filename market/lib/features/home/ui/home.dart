@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/widgets/cousttom_search_feild.dart';
 
 class Home extends StatelessWidget {
@@ -11,6 +12,8 @@ class Home extends StatelessWidget {
       child: ListView(
         children: [
           CustomSearchFeild(),
+          Height(height: 20),
+          Image.asset('assets/imgs/market.jpg',fit: BoxFit.cover,),
         ],
       ),
     );
