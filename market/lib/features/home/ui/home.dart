@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:market/core/widgets/cousttom_search_feild.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Home'),);
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: ListView(
+        children: [
+          CustomSearchFeild(),
+        ],
+      ),
+    );
   }
 }
+

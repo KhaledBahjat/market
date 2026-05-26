@@ -7,7 +7,7 @@ import 'package:market/features/auth/ui/sign_up.dart';
 
 class RouterGenerator {
   static GoRouter router = GoRouter(
-    initialLocation: AppRouts.signInScreen,
+    initialLocation: AppRouts.homeScreen,
     routes: [
       GoRoute(
         path: AppRouts.signInScreen,
