@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/routing/router_generator.dart';
 import 'package:market/core/theme/app_colors.dart';
-import 'package:market/features/auth/ui/sign_in.dart';
 
 void main() {
   runApp(Market());
