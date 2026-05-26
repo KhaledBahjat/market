@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-   CustomButton({
+   const CustomButton({
     super.key, this.onPressed, required this.buttonText,
   });
   final void Function()? onPressed;

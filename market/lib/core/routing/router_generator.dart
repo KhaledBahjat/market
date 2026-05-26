@@ -4,11 +4,17 @@ import 'package:market/features/auth/nav_bar/ui/main_home.dart';
 import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
 import 'package:market/features/auth/ui/sign_up.dart';
+import 'package:market/splash_screen.dart';
 
 class RouterGenerator {
   static GoRouter router = GoRouter(
-    initialLocation: AppRouts.homeScreen,
+    initialLocation: AppRouts.splashScreen,
     routes: [
+      GoRoute(
+        path: AppRouts.splashScreen,
+        name: AppRouts.splashScreen,
+        builder: (context, state) => SplashScreen(),
+      ),
       GoRoute(
         path: AppRouts.signInScreen,
         name: AppRouts.signInScreen,
