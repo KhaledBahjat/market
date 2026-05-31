@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
                         placeholder: (context, url) => Container(
                           height: 200,
                           width: double.infinity,
-                          color: AppColors.kGreyColor.withOpacity(0.5),
+                          color: AppColors.kGreyColor.withValues(alpha: 0.5),
                           child: Center(
                             child: CircularProgressIndicator(
                               color: AppColors.kPrimaryColor,
@@ -59,7 +59,7 @@ class Home extends StatelessWidget {
                         errorWidget: (context, url, error) => Container(
                           height: 200,
                           width: double.infinity,
-                          color: AppColors.kGreyColor.withOpacity(0.5),
+                          color: AppColors.kGreyColor.withValues(alpha: 0.5),
                           child: Center(
                             child: Icon(
                               Icons.error,
@@ -74,7 +74,7 @@ class Home extends StatelessWidget {
                         padding: EdgeInsets.all(10),
 
                         decoration: BoxDecoration(
-                          color: AppColors.kPrimaryColor.withOpacity(0.7),
+                          color: AppColors.kPrimaryColor.withValues(alpha: 0.7),
                           borderRadius: BorderRadius.only(
                             topRight: Radius.circular(16.r),
                             bottomLeft: Radius.circular(16.r),
