@@ -18,8 +18,6 @@ class Store extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
             ),
-            Height(height: 10),
-          CustomSearchFeild(),
           Height(height: 20),
           ProudctList()
         ],
