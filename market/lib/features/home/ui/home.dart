@@ -40,13 +40,33 @@ class Home extends StatelessWidget {
                         bottomLeft: Radius.circular(16),
                         bottomRight: Radius.circular(16),
                       ),
-                      child: Image(
-                        image: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
-                        ),
-                        fit: BoxFit.cover,
+                      child: CachedNetworkImage(
+                        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
                         height: 200,
                         width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          height: 200,
+                          width: double.infinity,
+                          color: AppColors.kGreyColor.withOpacity(0.5),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.kPrimaryColor,
+                            ),
+                          ),
+
+                      ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 200,
+                          width: double.infinity,
+                          color: AppColors.kGreyColor.withOpacity(0.5),
+                          child: Center(
+                            child: Icon(
+                              Icons.error,
+                              color: AppColors.kPrimaryColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -75,6 +95,7 @@ class Home extends StatelessWidget {
                   ],
                 ),
 
+                Height(height: 5),
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: Column(
