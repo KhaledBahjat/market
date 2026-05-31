@@ -22,6 +22,30 @@ class Home extends StatelessWidget {
           ),
           Height(height: 10),
           CategorysList(),
+          Height(height: 20),
+          Card(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Image.asset('assets/imgs/sale.jpg', fit: BoxFit.cover),
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        color: Colors.black54,
+                        child: const Text(
+                          'Big Sale',
+                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
