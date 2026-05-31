@@ -43,41 +43,100 @@ class Home extends StatelessWidget {
                       child: Image(
                         image: NetworkImage(
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
-                  
                         ),
                         fit: BoxFit.cover,
                         height: 200,
                         width: double.infinity,
-
                       ),
                     ),
-                    Positioned(child: Container(
-                      padding: EdgeInsets.all(10),
-                      
-                      decoration: BoxDecoration(
-                        color: AppColors.kPrimaryColor.withOpacity(0.7),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16.r),
-                          bottomLeft: Radius.circular(16.r),
-                          bottomRight: Radius.circular(16.r),
+                    Positioned(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+
+                        decoration: BoxDecoration(
+                          color: AppColors.kPrimaryColor.withOpacity(0.7),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(16.r),
+                            bottomLeft: Radius.circular(16.r),
+                            bottomRight: Radius.circular(16.r),
+                          ),
+                        ),
+                        child: Text(
+                          '10% Off',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.kWhiteColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      child: Text(
-                        '10% Off',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.kWhiteColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),),
+                    ),
                   ],
-               
-               
                 ),
-              
-              
+
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Product Name',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.favorite_border,
+                              color: AppColors.kPrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '\$100 LE',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.kPrimaryColor,
+                                ),
+                              ),
+                              Text(
+                                '\$150 LE',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  decoration: TextDecoration.lineThrough,
+                                  color: AppColors.kGreyColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.kPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Text('Buy Now',style: TextStyle(color: AppColors.kWhiteColor)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
