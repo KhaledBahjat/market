@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
- import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
@@ -24,7 +24,10 @@ class SignIn extends StatelessWidget {
                 Height(height: 50),
                 Text(
                   'Welcome To Our Market',
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Height(height: 24),
                 Card(
@@ -57,8 +60,13 @@ class SignIn extends StatelessWidget {
                         ),
                         ForgetPasswordWidget(),
                         Height(height: 10),
-          
-                        CustomButton(onPressed: () {}, buttonText: 'Sign In'),
+
+                        CustomButton(
+                          onPressed: () => GoRouter.of(
+                            context,
+                          ).pushReplacementNamed(AppRouts.homeScreen),
+                          buttonText: 'Sign In',
+                        ),
                         Height(height: 10),
                         // TODO: sign in with google
                         SignInWithGoogleButton(),
