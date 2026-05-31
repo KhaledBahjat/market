@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToHome() {
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 1), () {
       if (mounted) {
         context.go('/home_screen');
       }
@@ -139,13 +139,13 @@ class _SplashScreenState extends State<SplashScreen>
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            Color(0xFF00D4FF).withOpacity(0.08),
-                            Color(0xFF0099CC).withOpacity(0.03),
+                            Color(0xFF00D4FF).withValues(alpha: 0.08),
+                            Color(0xFF0099CC).withValues(alpha: 0.03),
                           ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFF00D4FF).withOpacity(0.1),
+                            color: Color(0xFF00D4FF).withValues(alpha: 0.1),
                             blurRadius: 50,
                           ),
                         ],
@@ -170,13 +170,13 @@ class _SplashScreenState extends State<SplashScreen>
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            Color(0xFFFF006E).withOpacity(0.06),
-                            Color(0xFFFB5607).withOpacity(0.02),
+                            Color(0xFFFF006E).withValues(alpha: 0.06),
+                            Color(0xFFFB5607).withValues(alpha: 0.02),
                           ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Color(0xFFFF006E).withOpacity(0.08),
+                            color: Color(0xFFFF006E).withValues(alpha: 0.08),
                             blurRadius: 50,
                           ),
                         ],
@@ -214,13 +214,13 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color(0xFF00D4FF).withOpacity(0.6),
+                                  color: Color(0xFF00D4FF).withValues(alpha: 0.6),
                                   blurRadius: 50,
                                   spreadRadius: 8,
                                   offset: const Offset(0, 20),
                                 ),
                                 BoxShadow(
-                                  color: Color(0xFF0099CC).withOpacity(0.4),
+                                  color: Color(0xFF0099CC).withValues(alpha: 0.4),
                                   blurRadius: 25,
                                   spreadRadius: 3,
                                 ),
@@ -262,7 +262,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 letterSpacing: 2.0,
                                 shadows: [
                                   Shadow(
-                                    color: Color(0xFF00D4FF).withOpacity(0.6),
+                                    color: Color(0xFF00D4FF).withValues(alpha: 0.6),
                                     blurRadius: 15,
                                     offset: const Offset(0, 5),
                                   ),
@@ -288,7 +288,7 @@ class _SplashScreenState extends State<SplashScreen>
                               'Premium Shopping',
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Colors.white.withOpacity(0.8),
+                                color: Colors.white.withValues(alpha: 0.8),
                                 letterSpacing: 1.0,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -297,7 +297,7 @@ class _SplashScreenState extends State<SplashScreen>
                               'Experience',
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: Colors.white.withOpacity(0.6),
+                                color: Colors.white.withValues(alpha: 0.6),
                                 letterSpacing: 1.0,
                                 fontWeight: FontWeight.w300,
                               ),
@@ -345,12 +345,12 @@ class _SplashScreenState extends State<SplashScreen>
                           Color(0xFFFF006E),
                         ],
                       ),
-                      color: Color(0xFF00D4FF).withOpacity(
-                        (progress < 0 ? 0.0 : progress).clamp(0.0, 1.0),
+                      color: Color(0xFF00D4FF).withValues(
+                        alpha: (progress < 0 ? 0.0 : progress).clamp(0.0, 1.0),
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Color(0xFF00D4FF).withOpacity(0.7),
+                          color: Color(0xFF00D4FF).withValues(alpha: 0.7),
                           blurRadius: 12,
                         ),
                       ],
@@ -366,7 +366,7 @@ class _SplashScreenState extends State<SplashScreen>
           'Preparing your experience...',
           style: TextStyle(
             fontSize: 13.sp,
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withValues(alpha: 0.5),
             letterSpacing: 0.8,
             fontWeight: FontWeight.w300,
           ),
