@@ -62,8 +62,9 @@ class Profile extends StatelessWidget {
 
             CustomCard(
               icon: Icons.history,
-              title: 'Order History',
-              subtitle: 'Your past orders',
+              title: 'My Orders',
+              subtitle: 'View your order history',
+              onTap: () => GoRouter.of(context).push(AppRouts.myOrderScreen),
             ),
 
             const Height(height: 8),

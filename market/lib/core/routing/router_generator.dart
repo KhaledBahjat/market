@@ -5,6 +5,7 @@ import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
 import 'package:market/features/auth/ui/sign_up.dart';
 import 'package:market/features/profile/ui/edit_profile.dart';
+import 'package:market/features/profile/ui/my_order.dart';
 import 'package:market/splash_screen.dart';
 
 class RouterGenerator {
@@ -40,6 +41,11 @@ class RouterGenerator {
         path: AppRouts.editProfileScreen,
         name: AppRouts.editProfileScreen,
         builder: (context, state) => EditProfile(),
+      ),
+      GoRoute(
+        path: AppRouts.myOrderScreen,
+        name: AppRouts.myOrderScreen,
+        builder: (context, state) => MyOrderScreen(),
       ),
     ],
   );

@@ -5,5 +5,5 @@ class AppRouts {
     static const String homeScreen = '/home_screen';
     static const String forgetPasswordScreen = '/forget_password_screen';
     static const String editProfileScreen = '/edit_profile_screen';
-    
+    static const String myOrderScreen = '/my_order_screen';
 }

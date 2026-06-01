@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/khaled/market/market/linux"
+    "cmake.sourceDirectory": "/home/khaled/market/market/linux",
+    "cmake.ignoreCMakeListsMissing": true
 }
