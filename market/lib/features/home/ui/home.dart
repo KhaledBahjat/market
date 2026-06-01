@@ -1,8 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/helper/spacing.dart';
-import 'package:market/core/theme/app_colors.dart';
 import 'package:market/core/widgets/cousttom_search_feild.dart';
 import 'package:market/core/widgets/proudct_list.dart';
 import 'package:market/features/home/widgets/categorys_list.dart';
