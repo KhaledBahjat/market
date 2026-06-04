@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:market/core/helper/spacing.dart';
 
 class ProudctDetils extends StatelessWidget {
   const ProudctDetils({super.key});
@@ -20,6 +24,51 @@ class ProudctDetils extends StatelessWidget {
             width: double.infinity,
             height: 250.h,
             fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text('Proudct Name'), Text('120\$')],
+                ),
+                Height(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text('0'),
+                        Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                      ],
+                    ),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+                  ],
+                ),
+
+                Text('Proudct Description'),
+                Height(height: 20),
+                RatingBar.builder(
+                  initialRating: 3,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    log(rating.toString());
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
