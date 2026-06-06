@@ -15,7 +15,7 @@ class CategorysList extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
               CircleAvatar(

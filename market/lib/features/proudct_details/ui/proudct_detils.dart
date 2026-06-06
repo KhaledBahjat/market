@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/features/auth/widgets/coustom_text_form_feild.dart';
+import 'package:market/features/proudct_details/widgets/comment_list.dart';
 
 class ProudctDetils extends StatelessWidget {
   const ProudctDetils({super.key});
@@ -28,6 +30,7 @@ class ProudctDetils extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,6 +70,24 @@ class ProudctDetils extends StatelessWidget {
                     log(rating.toString());
                   },
                 ),
+                Height(height: 16),
+                CustomTextFormFeild(
+                  labelText: 'Type your feedback',
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.send),
+                  ),
+                ),
+                Height(height: 15),
+                Text(
+                  'Comments',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Height(height: 12),
+                CommentsList(),
               ],
             ),
           ),
@@ -75,3 +96,4 @@ class ProudctDetils extends StatelessWidget {
     );
   }
 }
+
