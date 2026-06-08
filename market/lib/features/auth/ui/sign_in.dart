@@ -36,6 +36,9 @@ class _SignInState extends State<SignIn> {
           if (state is LoginFailure) {
             ShowErrorMessageWidget(message: state.errorMessage);
           }
+          if (state is LoginSuccess) {
+            GoRouter.of(context).pushReplacement(AppRouts.homeScreen);
+          }
         },
         builder: (context, state) {
           AuthCubit authCubit = context.read<AuthCubit>();
