@@ -11,7 +11,7 @@ import 'package:market/splash_screen.dart';
 
 class RouterGenerator {
   static GoRouter router = GoRouter(
-    initialLocation: AppRouts.splashScreen,
+    initialLocation: AppRouts.signInScreen,
     routes: [
       GoRoute(
         path: AppRouts.splashScreen,
