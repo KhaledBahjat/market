@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/routing/router_generator.dart';
+import 'package:market/core/sensetive_data.dart';
 import 'package:market/core/theme/app_colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: SENSITIVE_DATA["url"] as String,
+    publishableKey: SENSITIVE_DATA["publishableKey"] as String,
+  );
   runApp(Market());
 }
 
