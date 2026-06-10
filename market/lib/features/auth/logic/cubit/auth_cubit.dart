@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:market/features/auth/logic/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'auth_state.dart';
@@ -18,6 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoginLoading());
     try {
       await client.auth.signInWithPassword(password: password, email: email);
+        if (client.auth.currentUser is User) {
+          await getUserData();
+        }
       emit(LoginSuccess());
     } on AuthException catch (e) {
       log(e.message);
@@ -38,6 +42,7 @@ class AuthCubit extends Cubit<AuthState> {
       await client.auth.signUp(password: password, email: email);
       if (client.auth.currentUser is User) {
         await addUserData(name: name, email: email);
+        await getUserData();
       }
       emit(SignUpSuccess());
     } on AuthException catch (e) {
@@ -75,6 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
         name: googleUser.displayName ?? '',
         email: googleUser.email,
       );
+        await getUserData();
       emit(GoogleSignInSuccess());
     } on Exception catch (e) {
       emit(GoogleSignInFailure(e.toString()));
@@ -108,7 +114,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AddedUserDataFailure(e.toString()));
     }
   }
-
+  UserModel? userData;
   Future<void> getUserData() async {
     emit(GetUserDataLoading());
     try {
@@ -119,8 +125,8 @@ class AuthCubit extends Cubit<AuthState> {
       final response = await client
           .from('users')
           .select()
-          .eq('id', user.id)
-          .single();
+          .eq('id', client.auth.currentUser!.id);
+          userData=UserModel.fromJson(response[0]);
       emit(
         GetUserDataSuccess(),
       );

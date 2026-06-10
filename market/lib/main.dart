@@ -25,15 +25,7 @@ class Market extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(375, 812),
       child: BlocProvider(
-  create: (context) {
-    final authCubit = AuthCubit();
-
-    if (Supabase.instance.client.auth.currentUser != null) {
-      authCubit.getUserData();
-    }
-
-    return authCubit;
-  },
+  create: (context) => AuthCubit(),
   child: MaterialApp.router(
     routerConfig: RouterGenerator.router,
     theme: ThemeData(
