@@ -80,7 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
 
 
   // log out function
-  Future<void> logOut() async {
+  Future<void> signOut() async {
     emit(LogoutLoading());
     try {
       await client.auth.signOut();

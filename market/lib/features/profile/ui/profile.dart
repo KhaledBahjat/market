@@ -13,6 +13,11 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
+        if (state is LogoutLoading) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Logging out...')),
+          );
+        }
         if (state is LogoutFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage)),
@@ -108,7 +113,7 @@ class Profile extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
                   onPressed: () {
-                    context.read<AuthCubit>().logOut();
+                    context.read<AuthCubit>().signOut();
                   },
                   icon: const Icon(Icons.logout),
                   label: const Text('Log out'),
