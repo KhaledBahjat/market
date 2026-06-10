@@ -36,6 +36,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(SignUpLoading());
     try {
       await client.auth.signUp(password: password, email: email);
+      if (client.auth.currentUser is User) {
+        await addUserData(name: name, email: email);
+      }
       emit(SignUpSuccess());
     } on AuthException catch (e) {
       log(e.message);
@@ -71,13 +74,16 @@ class AuthCubit extends Cubit<AuthState> {
         accessToken: authorization.accessToken,
       );
       log("Response: $response");
+      await addUserData(
+        name: googleUser.displayName ?? '',
+        email: googleUser.email,
+      );
       emit(GoogleSignInSuccess());
     } on Exception catch (e) {
       emit(GoogleSignInFailure(e.toString()));
       log("Error when to Sign in with google: $e");
     }
   }
-
 
   // log out function
   Future<void> signOut() async {
@@ -94,7 +100,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-
   // reset password function
   Future<void> resetPassword({required String email}) async {
     emit(PasswordResetLoading());
@@ -110,4 +115,31 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // addeduserdata function
+
+  Future<void> addUserData({
+    required String name,
+    required String email,
+  }) async {
+    emit(AddedUserDataLoading());
+    try {
+      final user = client.auth.currentUser;
+      if (user == null) {
+        throw AuthException('No authenticated user found.');
+      }
+      final response = await client.from('users').upsert({
+        'id': client.auth.currentUser!.id,
+        'name': name,
+        'email': email,
+      });
+      emit(AddedUserDataSuccess());
+      log("Add User Data Response: $response");
+    } on AuthException catch (e) {
+      log(e.message);
+      emit(AddedUserDataFailure(e.message));
+    } catch (e) {
+      log(e.toString());
+      emit(AddedUserDataFailure(e.toString()));
+    }
+  }
 }
