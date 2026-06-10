@@ -8,10 +8,11 @@ import 'package:market/features/profile/ui/edit_profile.dart';
 import 'package:market/features/profile/ui/my_order.dart';
 import 'package:market/features/proudct_details/ui/proudct_detils.dart';
 import 'package:market/splash_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RouterGenerator {
   static GoRouter router = GoRouter(
-    initialLocation: AppRouts.splashScreen,
+    initialLocation: Supabase.instance.client.auth.currentUser != null ? AppRouts.homeScreen : AppRouts.signInScreen,
     routes: [
       GoRoute(
         path: AppRouts.splashScreen,
