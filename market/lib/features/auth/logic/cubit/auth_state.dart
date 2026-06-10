@@ -38,3 +38,11 @@ final class LogoutFailure extends AuthState {
   final String errorMessage;
   LogoutFailure(this.errorMessage);
 }
+
+
+final class PasswordResetLoading extends AuthState {}
+final class PasswordResetSuccess extends AuthState {}
+final class PasswordResetFailure extends AuthState {
+  final String errorMessage;
+  PasswordResetFailure(this.errorMessage);
+}
