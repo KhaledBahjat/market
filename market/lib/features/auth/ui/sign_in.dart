@@ -13,7 +13,7 @@ import 'package:market/features/auth/widgets/show_error_message_widget.dart';
 import 'package:market/features/auth/widgets/sign_in_with_googlr_button.dart';
 
 class SignIn extends StatefulWidget {
-  SignIn({super.key});
+  const SignIn({super.key});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -33,10 +33,14 @@ class _SignInState extends State<SignIn> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is LoginFailure) {
-            ShowErrorMessageWidget(message: state.errorMessage);
+          if (state is LoginFailure || state is GoogleSignInFailure) {
+            ShowErrorMessageWidget(
+              message: state is LoginFailure
+                  ? state.errorMessage
+                  : (state as GoogleSignInFailure).errorMessage,
+            );
           }
-          if (state is LoginSuccess) {
+          if (state is LoginSuccess || state is GoogleSignInSuccess) {
             GoRouter.of(context).pushReplacement(AppRouts.homeScreen);
           }
         },
@@ -44,7 +48,7 @@ class _SignInState extends State<SignIn> {
           AuthCubit authCubit = context.read<AuthCubit>();
 
           return Scaffold(
-            body: state is LoginLoading
+            body: state is LoginLoading || state is GoogleSignInLoading
                 ? Center(
                     child: CircularProgressIndicator(
                       color: AppColors.kPrimaryColor,
@@ -103,7 +107,7 @@ class _SignInState extends State<SignIn> {
                                     ),
                                     ForgetPasswordWidget(),
                                     Height(height: 10),
-                        
+
                                     CustomButton(
                                       onPressed: () {
                                         if (formKey.currentState!.validate()) {
@@ -117,10 +121,13 @@ class _SignInState extends State<SignIn> {
                                     ),
                                     Height(height: 10),
                                     // TODO: sign in with google
-                                    SignInWithGoogleButton(),
+                                    SignInWithGoogleButton(
+                                      onPressed: () => authCubit.signInWithGoogle(),
+                                    ),
                                     Height(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text('Don\'t have an account?'),
                                         TextButton(

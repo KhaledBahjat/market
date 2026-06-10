@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -43,6 +43,54 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       log(e.toString());
       emit(SignUpFailure(e.toString()));
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    emit(GoogleSignInLoading());
+    try {
+      const webClientId =
+          '123359603602-6epquaicplt1ct1lqskkhko2n5s9kiss.apps.googleusercontent.com';
+      final scopes = ['email', 'profile'];
+      final googleSignIn = GoogleSignIn.instance;
+      await googleSignIn.initialize(serverClientId: webClientId);
+      final googleUser = await googleSignIn.attemptLightweightAuthentication();
+      if (googleUser == null) {
+        throw AuthException('Failed to sign in with Google.');
+      }
+      final authorization =
+          await googleUser.authorizationClient.authorizationForScopes(scopes) ??
+          await googleUser.authorizationClient.authorizeScopes(scopes);
+      final idToken = googleUser.authentication.idToken;
+      if (idToken == null) {
+        throw AuthException('No ID Token found.');
+      }
+      var response = await client.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: authorization.accessToken,
+      );
+      log("Response: $response");
+      emit(GoogleSignInSuccess());
+    } on Exception catch (e) {
+      emit(GoogleSignInFailure(e.toString()));
+      log("Error when to Sign in with google: $e");
+    }
+  }
+
+
+  // log out function
+  Future<void> logOut() async {
+    emit(LogoutLoading());
+    try {
+      await client.auth.signOut();
+      emit(LogoutSuccess());
+    } on AuthException catch (e) {
+      log(e.message);
+      emit(LogoutFailure(e.message));
+    } catch (e) {
+      log(e.toString());
+      emit(LogoutFailure(e.toString()));
     }
   }
 }

@@ -5,14 +5,15 @@ import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class SignInWithGoogleButton extends StatelessWidget {
-  const SignInWithGoogleButton({
+   SignInWithGoogleButton({
     super.key,
+    this.onPressed,
   });
-
+  void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.kWhiteColor,
         minimumSize: Size(double.infinity, 50.h),

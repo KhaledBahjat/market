@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:market/core/my_observer.dart';
 import 'package:market/core/routing/router_generator.dart';
 import 'package:market/core/sensetive_data.dart';
 import 'package:market/core/theme/app_colors.dart';
@@ -13,6 +14,7 @@ void main() async {
     url: SENSITIVE_DATA["url"] as String,
     publishableKey: SENSITIVE_DATA["publishableKey"] as String,
   );
+    Bloc.observer = MyObserver();
   runApp(Market());
 }
 

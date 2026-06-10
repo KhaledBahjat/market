@@ -11,7 +11,7 @@ import 'package:market/features/auth/widgets/coustom_text_form_feild.dart';
 import 'package:market/features/auth/widgets/show_error_message_widget.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({super.key});
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
