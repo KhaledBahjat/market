@@ -57,10 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
       final scopes = ['email', 'profile'];
       final googleSignIn = GoogleSignIn.instance;
       await googleSignIn.initialize(serverClientId: webClientId);
-      final googleUser = await googleSignIn.attemptLightweightAuthentication();
-      if (googleUser == null) {
-        throw AuthException('Failed to sign in with Google.');
-      }
+      final googleUser = await googleSignIn.authenticate();
       final authorization =
           await googleUser.authorizationClient.authorizationForScopes(scopes) ??
           await googleUser.authorizationClient.authorizeScopes(scopes);
@@ -85,38 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // log out function
-  Future<void> signOut() async {
-    emit(LogoutLoading());
-    try {
-      await client.auth.signOut();
-      emit(LogoutSuccess());
-    } on AuthException catch (e) {
-      log(e.message);
-      emit(LogoutFailure(e.message));
-    } catch (e) {
-      log(e.toString());
-      emit(LogoutFailure(e.toString()));
-    }
-  }
-
-  // reset password function
-  Future<void> resetPassword({required String email}) async {
-    emit(PasswordResetLoading());
-    try {
-      await client.auth.resetPasswordForEmail(email);
-      emit(PasswordResetSuccess());
-    } on AuthException catch (e) {
-      log(e.message);
-      emit(PasswordResetFailure(e.message));
-    } catch (e) {
-      log(e.toString());
-      emit(PasswordResetFailure(e.toString()));
-    }
-  }
-
   // addeduserdata function
-
   Future<void> addUserData({
     required String name,
     required String email,
@@ -140,6 +106,61 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       log(e.toString());
       emit(AddedUserDataFailure(e.toString()));
+    }
+  }
+
+  Future<void> getUserData() async {
+    emit(GetUserDataLoading());
+    try {
+      final user = client.auth.currentUser;
+      if (user == null) {
+        throw AuthException('No authenticated user found.');
+      }
+      final response = await client
+          .from('users')
+          .select()
+          .eq('id', user.id)
+          .single();
+      emit(
+        GetUserDataSuccess(),
+      );
+      log("Get User Data Response: $response");
+    } on AuthException catch (e) {
+      log(e.message);
+      emit(GetUserDataFailure(e.message));
+    } catch (e) {
+      log(e.toString());
+      emit(GetUserDataFailure(e.toString()));
+    }
+  }
+
+  // reset password function
+  Future<void> resetPassword({required String email}) async {
+    emit(PasswordResetLoading());
+    try {
+      await client.auth.resetPasswordForEmail(email);
+      emit(PasswordResetSuccess());
+    } on AuthException catch (e) {
+      log(e.message);
+      emit(PasswordResetFailure(e.message));
+    } catch (e) {
+      log(e.toString());
+      emit(PasswordResetFailure(e.toString()));
+    }
+  }
+
+  // log out function
+  Future<void> signOut() async {
+    emit(LogoutLoading());
+    try {
+      await client.auth.signOut();
+      emit(LogoutSuccess());
+    } on AuthException catch (e) {
+      log(e.message);
+      emit(LogoutFailure(e.message));
+    } catch (e) {
+      log(e.toString());
+      emit(LogoutFailure(e.toString()));
     }
   }
 }

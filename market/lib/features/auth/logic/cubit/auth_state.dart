@@ -54,3 +54,12 @@ final class AddedUserDataFailure extends AuthState {
   final String errorMessage;
   AddedUserDataFailure(this.errorMessage);
 }
+
+
+final class GetUserDataLoading extends AuthState {}
+final class GetUserDataSuccess extends AuthState {
+}
+final class GetUserDataFailure extends AuthState {
+  final String errorMessage;
+  GetUserDataFailure(this.errorMessage);
+}

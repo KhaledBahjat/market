@@ -25,17 +25,25 @@ class Market extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(375, 812),
       child: BlocProvider(
-        create: (context) => AuthCubit(),
-        child: MaterialApp.router(
-          routerConfig: RouterGenerator.router,
-          theme: ThemeData(
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.kScaffoldColor,
-          ),
-          debugShowCheckedModeBanner: false,
-          title: 'Market',
-        ),
-      ),
+  create: (context) {
+    final authCubit = AuthCubit();
+
+    if (Supabase.instance.client.auth.currentUser != null) {
+      authCubit.getUserData();
+    }
+
+    return authCubit;
+  },
+  child: MaterialApp.router(
+    routerConfig: RouterGenerator.router,
+    theme: ThemeData(
+      useMaterial3: true,
+      scaffoldBackgroundColor: AppColors.kScaffoldColor,
+    ),
+    debugShowCheckedModeBanner: false,
+    title: 'Market',
+  ),
+),
     );
   }
 }
