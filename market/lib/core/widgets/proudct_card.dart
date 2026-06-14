@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/model/product_model.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class ProudctCard extends StatelessWidget {
-  const ProudctCard({
+  const ProudctCard(this.product, {
     super.key,
   });
-
+  final ProductModel product;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,7 +31,7 @@ class ProudctCard extends StatelessWidget {
                     bottomRight: Radius.circular(16),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
+                    imageUrl:product.imageUrl?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
                     height: 200,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -71,7 +72,7 @@ class ProudctCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      '10% Off',
+                      '${product.sale}% Off',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.kWhiteColor,
@@ -93,7 +94,7 @@ class ProudctCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Product Name',
+                        product.proudctName,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -115,7 +116,7 @@ class ProudctCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$100 LE',
+                            '\$${product.proudctPrice} LE',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -123,7 +124,7 @@ class ProudctCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '\$150 LE',
+                            '\$${product.oldPrice} LE',
                             style: TextStyle(
                               fontSize: 14,
                               decoration: TextDecoration.lineThrough,

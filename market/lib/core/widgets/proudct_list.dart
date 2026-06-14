@@ -24,7 +24,7 @@ class ProudctList extends StatelessWidget {
             child: CircularProgressIndicator(color: AppColors.kPrimaryColor,),
           ) : ListView.builder(
             itemCount: products.length,
-            itemBuilder: (context, index) => ProudctCard(),
+            itemBuilder: (context, index) => ProudctCard(products[index]),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           );
