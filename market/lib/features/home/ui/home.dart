@@ -13,6 +13,7 @@ class Home extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: ListView(
         children: [
+          Height(height: 5),
           CustomSearchFeild(),
           Height(height: 20),
           Image.asset('assets/imgs/market.jpg', fit: BoxFit.cover),
