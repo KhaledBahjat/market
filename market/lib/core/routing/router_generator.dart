@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:market/core/model/product_model.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/features/auth/nav_bar/ui/main_home.dart';
 import 'package:market/features/auth/ui/forget_password.dart';
@@ -52,7 +53,9 @@ class RouterGenerator {
       GoRoute(
         path: AppRouts.proudctDetails,
         name: AppRouts.proudctDetails,
-        builder: (context, state) => ProudctDetils(),
+        builder: (context, state) => ProudctDetils(
+          product: state.extra as ProductModel,
+        ),
       ),
     ],
   );

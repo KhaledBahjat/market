@@ -15,7 +15,7 @@ class ProudctCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => GoRouter.of(context).pushNamed(AppRouts.proudctDetails),
+      onTap: () => GoRouter.of(context).pushNamed(AppRouts.proudctDetails, extra: product),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16.r)),

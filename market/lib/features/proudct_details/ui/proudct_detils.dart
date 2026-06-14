@@ -5,23 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/model/product_model.dart';
 import 'package:market/features/auth/widgets/coustom_text_form_feild.dart';
 import 'package:market/features/proudct_details/widgets/comment_list.dart';
 
 class ProudctDetils extends StatelessWidget {
-  const ProudctDetils({super.key});
-
+  const ProudctDetils({super.key, required this.product});
+  final ProductModel product;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Proudct Name'),
+        title: Text(product.proudctName),
         centerTitle: true,
       ),
       body: ListView(
         children: [
           CachedNetworkImage(
-            imageUrl:
+            imageUrl:product.imageUrl??
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
             width: double.infinity,
             height: 250.h,
@@ -34,7 +35,7 @@ class ProudctDetils extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('Proudct Name'), Text('120\$')],
+                  children: [Text(product.proudctName), Text('${product.proudctPrice}\$')],
                 ),
                 Height(height: 20),
                 Row(
@@ -53,7 +54,7 @@ class ProudctDetils extends StatelessWidget {
                   ],
                 ),
 
-                Text('Proudct Description'),
+                Text(product.desc),
                 Height(height: 20),
                 RatingBar.builder(
                   initialRating: 3,
