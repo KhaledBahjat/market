@@ -21,7 +21,15 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       rates = (response.data)
           .map<RateModel>((item) => RateModel.fromJson(item))
           .toList();
-          log(rates.toString());
+
+      for (var rate in rates) {
+        if(rate.rate != null){
+          averageRate += rate.rate!;
+        }
+        averageRate ~/= rates.length;
+      }
+      log(averageRate.toString());
+      // log(rates[0].rate.toString());
       emit(GetProductRateSuccess());
     } catch (e) {
       log(e.toString());
