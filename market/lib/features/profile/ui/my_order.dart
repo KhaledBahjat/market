@@ -41,7 +41,7 @@ final List<Order> sampleOrders = [
 ];
 
 class MyOrderScreen extends StatelessWidget {
-  const MyOrderScreen({Key? key}) : super(key: key);
+  const MyOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class MyOrderScreen extends StatelessWidget {
               )
             : ListView.separated(
                 itemCount: sampleOrders.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   final order = sampleOrders[index];
                   return OrderCard(order: order);
@@ -72,7 +72,7 @@ class MyOrderScreen extends StatelessWidget {
 class OrderCard extends StatelessWidget {
   final Order order;
 
-  const OrderCard({Key? key, required this.order}) : super(key: key);
+  const OrderCard({super.key, required this.order});
 
   Color _statusColor(String status, BuildContext context) {
     switch (status.toLowerCase()) {
