@@ -107,7 +107,7 @@ class OrderCard extends StatelessWidget {
                 radius: 28,
                 backgroundColor: Theme.of(
                   context,
-                ).colorScheme.primary.withOpacity(0.1),
+                ).colorScheme.primary.withValues(alpha: 0.1),
                 child: Text(
                   order.itemsCount.toString(),
                   style: const TextStyle(fontWeight: FontWeight.bold),

@@ -6,4 +6,5 @@ class AppRouts {
     static const String forgetPasswordScreen = '/forget_password_screen';
     static const String editProfileScreen = '/edit_profile_screen';
     static const String myOrderScreen = '/my_order_screen';
+    static const String proudctDetails="/proudct_details";
 }
