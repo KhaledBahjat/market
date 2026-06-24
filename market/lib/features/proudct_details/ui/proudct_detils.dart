@@ -8,24 +8,33 @@ import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/model/product_model.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
+import 'package:market/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:market/features/auth/widgets/coustom_text_form_feild.dart';
 import 'package:market/features/proudct_details/logic/cubit/product_details_cubit.dart';
 import 'package:market/features/proudct_details/widgets/comment_list.dart';
 
-class ProudctDetils extends StatelessWidget {
-  const ProudctDetils({super.key, required this.product});
+class ProudctDetils extends StatefulWidget {
+   ProudctDetils({super.key, required this.product});
   final ProductModel product;
+
+  @override
+  State<ProudctDetils> createState() => _ProudctDetilsState();
+}
+
+class _ProudctDetilsState extends State<ProudctDetils> {
+  final TextEditingController commentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          ProductDetailsCubit()..getProductRates(productId: product.proudctId),
+          ProductDetailsCubit()..getProductRates(productId: widget.product.proudctId),
       child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
           if(state is AddOrUpdateUserRateSuccess){
             GoRouter.of(context).pushReplacementNamed(
               AppRouts.proudctDetails,
-              extra: product,
+              extra: widget.product,
             );
           }
         },
@@ -33,10 +42,10 @@ class ProudctDetils extends StatelessWidget {
           ProductDetailsCubit cubit=context.read<ProductDetailsCubit>();
           return Scaffold(
             appBar: AppBar(
-              title: Text(product.proudctName),
+              title: Text(widget.product.proudctName),
               centerTitle: true,
             ),
-            body: state is GetProductRateLoading
+            body: state is GetProductRateLoading 
                 ? Center(
                     child: CircularProgressIndicator(
                       color: AppColors.kPrimaryColor,
@@ -46,7 +55,7 @@ class ProudctDetils extends StatelessWidget {
                     children: [
                       CachedNetworkImage(
                         imageUrl:
-                            product.imageUrl ??
+                            widget.product.imageUrl ??
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
                         width: double.infinity,
                         height: 250.h,
@@ -60,8 +69,8 @@ class ProudctDetils extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(product.proudctName),
-                                Text('${product.proudctPrice}\$'),
+                                Text(widget.product.proudctName),
+                                Text('${widget.product.proudctPrice}\$'),
                               ],
                             ),
                             Height(height: 20),
@@ -84,7 +93,7 @@ class ProudctDetils extends StatelessWidget {
                               ],
                             ),
 
-                            Text(product.desc),
+                            Text(widget.product.desc),
                             Height(height: 20),
                             RatingBar.builder(
                               initialRating: cubit.productRate.toDouble(),
@@ -102,20 +111,40 @@ class ProudctDetils extends StatelessWidget {
                               
                               onRatingUpdate: (rating) {
                                 cubit.addRateOrUpdateUserRate(
-                                  productId: product.proudctId,
+                                  productId: widget.product.proudctId,
                                   rateData: {
                                     "for_user": cubit.userId,
-                                    "for_product": product.proudctId,
+                                    "for_product": widget.product.proudctId,
                                     "rate": rating.toInt(),
+                                    "user_name": context.read<AuthCubit>().userData?.name ?? ''
                                   },
                                 );
                               },
                             ),
                             Height(height: 16),
                             CustomTextFormFeild(
+                              hint: 'Type your feedback',
+                              controller: commentController,
                               labelText: 'Type your feedback',
                               suffixIcon: IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  final comment = commentController.text.trim();
+                                  if (comment.isEmpty) {
+                                    return;
+                                  }
+                                  await cubit.addComment(
+                                    data: {
+                                      "for_user": cubit.userId,
+                                      "for_proudct": widget.product.proudctId,
+                                      "comment": comment,
+                                      "user_name": context.read<AuthCubit>().userData?.name?? ''
+                                    },
+                                  );
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  commentController.clear();
+                                },
                                 icon: Icon(Icons.send),
                               ),
                             ),
@@ -138,5 +167,11 @@ class ProudctDetils extends StatelessWidget {
         },
       ),
     );
+    
+  }
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
   }
 }

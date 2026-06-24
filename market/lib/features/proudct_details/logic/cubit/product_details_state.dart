@@ -17,3 +17,10 @@ final class AddOrUpdateUserRateError extends ProductDetailsState {
   final String error;
   AddOrUpdateUserRateError(this.error);
 }
+
+final class AddCommentLoading extends ProductDetailsState {}
+final class AddCommentSuccess extends ProductDetailsState {}
+final class AddCommentError extends ProductDetailsState {
+  final String error;
+  AddCommentError(this.error);
+}

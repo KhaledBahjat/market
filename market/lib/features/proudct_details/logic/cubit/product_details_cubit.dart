@@ -58,6 +58,18 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
   }
 
+  Future<void> addComment({required Map<String, dynamic> data}) async {
+    emit(AddCommentLoading());
+    try{
+      await _apiServices.postData("comments", data);
+      emit(AddCommentSuccess());
+    }
+    catch(e){
+      log(e.toString());
+      emit(AddCommentError(e.toString()));
+    }
+  }
+
   void _getUserRateForProudct() {
     userRates = rates.where((rate) => rate.forUser == userId).toList();
     productRate = userRates.isNotEmpty ? userRates[0].rate! : 5;
