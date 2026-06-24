@@ -14,6 +14,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   List<RateModel> rates = [];
   int averageRate = 0;
   int productRate = 5;
+  List<RateModel> userRates = [];
   Future<void> getProductRates({required String productId}) async {
     emit(GetProductRateLoading());
     try {
@@ -25,11 +26,11 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
           .toList();
 
       _getAvreageRate();
-      rates.where((userRate)=>userRate.forUser==Supabase.instance.client.auth.currentUser?.id).forEach((userRate) {
-        productRate=userRate.rate??5;
-      });
-      log(averageRate.toString());
-      // log(rates[0].rate.toString());
+      _getUserRateForProudct();
+      log('User rates long   =${userRates.length}');
+      log("rate.forUser= ${rates[0].forUser}");
+      log("user id ${Supabase.instance.client.auth.currentUser!.id}");
+      log("User rate is $productRate");
       emit(GetProductRateSuccess());
     } catch (e) {
       log(e.toString());
@@ -37,9 +38,18 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
   }
 
+  void _getUserRateForProudct() {
+    for (var rate in rates) {
+      if (rate.forUser == Supabase.instance.client.auth.currentUser!.id) {
+        userRates.add(rate);
+      }
+    }
+    productRate = userRates.isNotEmpty ? userRates[0].rate! : 5;
+  }
+
   void _getAvreageRate() {
-      for (var rate in rates) {
-      if(rate.rate != null){
+    for (var rate in rates) {
+      if (rate.rate != null) {
         averageRate += rate.rate!;
       }
       averageRate ~/= rates.length;

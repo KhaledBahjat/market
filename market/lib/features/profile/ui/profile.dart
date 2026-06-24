@@ -18,11 +18,15 @@ class Profile extends StatelessWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is GetUserDataFailure) {
-           Center(
+            Center(
               child: Text('Failed to load user data: ${state.errorMessage}'),
             );
-           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to load user data: ${state.errorMessage}')),
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Failed to load user data: ${state.errorMessage}',
+                ),
+              ),
             );
           }
           if (state is GetUserDataLoading) {
@@ -31,7 +35,6 @@ class Profile extends StatelessWidget {
                 color: AppColors.kPrimaryColor,
               ),
             );
-      
           }
           if (state is GetUserDataSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(

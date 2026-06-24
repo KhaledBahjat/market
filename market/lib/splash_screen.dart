@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToHome() {
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         context.go('/home_screen');
       }

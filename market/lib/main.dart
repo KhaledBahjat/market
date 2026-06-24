@@ -11,7 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: SENSITIVE_DATA["url"] as String,
+    url: SENSITIVE_DATA["url"] as String, 
     publishableKey: SENSITIVE_DATA["publishableKey"] as String,
   );
     Bloc.observer = MyObserver();

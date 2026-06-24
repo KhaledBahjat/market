@@ -82,7 +82,7 @@ class ProudctDetils extends StatelessWidget {
                             Text(product.desc),
                             Height(height: 20),
                             RatingBar.builder(
-                              initialRating: 3,
+                              initialRating: cubit.productRate.toDouble(),
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: false,
