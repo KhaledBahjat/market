@@ -10,3 +10,10 @@ final class GetProductRateError extends ProductDetailsState {
   final String error;
   GetProductRateError(this.error);
 }
+
+final class AddOrUpdateUserRateLoading extends ProductDetailsState {}
+final class AddOrUpdateUserRateSuccess extends ProductDetailsState {}
+final class AddOrUpdateUserRateError extends ProductDetailsState {
+  final String error;
+  AddOrUpdateUserRateError(this.error);
+}

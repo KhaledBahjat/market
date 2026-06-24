@@ -11,6 +11,7 @@ part 'product_details_state.dart';
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
   final ApiServices _apiServices = ApiServices();
+  final String userId = Supabase.instance.client.auth.currentUser!.id;
   List<RateModel> rates = [];
   int averageRate = 0;
   int productRate = 5;
@@ -38,12 +39,27 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
   }
 
-  void _getUserRateForProudct() {
-    for (var rate in rates) {
-      if (rate.forUser == Supabase.instance.client.auth.currentUser!.id) {
-        userRates.add(rate);
+  // User Add Rate to Proudct
+
+  Future<void> addRateOrUpdateUserRate({required String productId,required Map<String, dynamic> rateData}) async {
+    final String path = "rates?&select=*&for_user=eq.$userId&for_product=eq.$productId";
+    emit(AddOrUpdateUserRateLoading());
+    try {
+      if (_checkIfUserHasRated(productId: productId)) {
+        // Update User Rate
+        await _apiServices.patchData(path, rateData);
+      } else {
+        // Add User Rate
+        await _apiServices.postData(path, rateData);
       }
+      emit(AddOrUpdateUserRateSuccess());
+    } catch (e) {
+      emit(AddOrUpdateUserRateError(e.toString()));
     }
+  }
+
+  void _getUserRateForProudct() {
+    userRates = rates.where((rate) => rate.forUser == userId).toList();
     productRate = userRates.isNotEmpty ? userRates[0].rate! : 5;
   }
 
@@ -52,7 +68,16 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       if (rate.rate != null) {
         averageRate += rate.rate!;
       }
-      averageRate ~/= rates.length;
+    averageRate = rates.isNotEmpty ? (averageRate / rates.length).round() : 0;
     }
+  }
+
+  bool _checkIfUserHasRated({required String productId}) {
+    for (var rate in rates) {
+      if (rate.forUser == userId && rate.forProduct == productId) {
+        return true;
+      }
+    }
+    return false;
   }
 }

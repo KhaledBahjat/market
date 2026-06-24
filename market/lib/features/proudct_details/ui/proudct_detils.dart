@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/model/product_model.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 import 'package:market/features/auth/widgets/coustom_text_form_feild.dart';
 import 'package:market/features/proudct_details/logic/cubit/product_details_cubit.dart';
@@ -22,7 +22,12 @@ class ProudctDetils extends StatelessWidget {
           ProductDetailsCubit()..getProductRates(productId: product.proudctId),
       child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if(state is AddOrUpdateUserRateSuccess){
+            GoRouter.of(context).pushReplacementNamed(
+              AppRouts.proudctDetails,
+              extra: product,
+            );
+          }
         },
         builder: (context, state) {
           ProductDetailsCubit cubit=context.read<ProductDetailsCubit>();
@@ -94,8 +99,16 @@ class ProudctDetils extends StatelessWidget {
                                 Icons.star,
                                 color: Colors.amber,
                               ),
+                              
                               onRatingUpdate: (rating) {
-                                log(rating.toString());
+                                cubit.addRateOrUpdateUserRate(
+                                  productId: product.proudctId,
+                                  rateData: {
+                                    "for_user": cubit.userId,
+                                    "for_product": product.proudctId,
+                                    "rate": rating.toInt(),
+                                  },
+                                );
                               },
                             ),
                             Height(height: 16),

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market/core/model/product_model.dart';
 import 'package:market/core/routing/app_routs.dart';
@@ -53,9 +54,17 @@ class RouterGenerator {
       GoRoute(
         path: AppRouts.proudctDetails,
         name: AppRouts.proudctDetails,
-        builder: (context, state) => ProudctDetils(
-          product: state.extra as ProductModel,
-        ),
+        builder: (context, state) {
+          final product = state.extra as ProductModel?;
+          if (product == null) {
+            return  Scaffold(
+              body: Center(
+                child: Text('Product details are unavailable.'),
+              ),
+            );
+          }
+          return ProudctDetils(product: product);
+        },
       ),
     ],
   );

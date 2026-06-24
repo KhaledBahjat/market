@@ -11,10 +11,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: SENSITIVE_DATA["url"] as String, 
+    url: SENSITIVE_DATA["url"] as String,
     publishableKey: SENSITIVE_DATA["publishableKey"] as String,
   );
-    Bloc.observer = MyObserver();
+  Bloc.observer = MyObserver();
   runApp(Market());
 }
 
@@ -25,17 +25,17 @@ class Market extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(375, 812),
       child: BlocProvider(
-  create: (context) => AuthCubit(),
-  child: MaterialApp.router(
-    routerConfig: RouterGenerator.router,
-    theme: ThemeData(
-      useMaterial3: true,
-      scaffoldBackgroundColor: AppColors.kScaffoldColor,
-    ),
-    debugShowCheckedModeBanner: false,
-    title: 'Market',
-  ),
-),
+        create: (context) => AuthCubit(),
+        child: MaterialApp.router(
+          routerConfig: RouterGenerator.router,
+          theme: ThemeData(
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.kScaffoldColor,
+          ),
+          debugShowCheckedModeBanner: false,
+          title: 'Market',
+        ),
+      ),
     );
   }
 }
