@@ -42,18 +42,21 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   // User Add Rate to Proudct
 
   Future<void> addRateOrUpdateUserRate({required String productId,required Map<String, dynamic> rateData}) async {
-    final String path = "rates?&select=*&for_user=eq.$userId&for_product=eq.$productId";
     emit(AddOrUpdateUserRateLoading());
     try {
       if (_checkIfUserHasRated(productId: productId)) {
         // Update User Rate
-        await _apiServices.patchData(path, rateData);
+        await _apiServices.patchData(
+          "rates?for_user=eq.$userId&for_product=eq.$productId",
+          rateData,
+        );
       } else {
         // Add User Rate
-        await _apiServices.postData(path, rateData);
+        await _apiServices.postData("rates", rateData);
       }
       emit(AddOrUpdateUserRateSuccess());
     } catch (e) {
+      log(e.toString());
       emit(AddOrUpdateUserRateError(e.toString()));
     }
   }

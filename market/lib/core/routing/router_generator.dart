@@ -14,7 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RouterGenerator {
   static GoRouter router = GoRouter(
-    initialLocation: Supabase.instance.client.auth.currentUser != null ? AppRouts.homeScreen : AppRouts.signInScreen,
+    initialLocation: AppRouts.splashScreen,
     routes: [
       GoRoute(
         path: AppRouts.splashScreen,

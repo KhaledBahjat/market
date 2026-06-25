@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:math' as math;
+import 'package:market/core/routing/app_routs.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -89,7 +91,10 @@ class _SplashScreenState extends State<SplashScreen>
   void _navigateToHome() {
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        context.go('/home_screen');
+        final targetRoute = Supabase.instance.client.auth.currentUser != null
+            ? AppRouts.homeScreen
+            : AppRouts.signInScreen;
+        context.go(targetRoute);
       }
     });
   }

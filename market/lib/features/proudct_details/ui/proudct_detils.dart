@@ -115,8 +115,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                                   rateData: {
                                     "for_user": cubit.userId,
                                     "for_product": widget.product.proudctId,
-                                    "rate": rating.toInt(),
-                                    "user_name": context.read<AuthCubit>().userData?.name ?? ''
+                                    "rate": rating.toInt()
                                   },
                                 );
                               },
@@ -157,7 +156,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                               ),
                             ),
                             Height(height: 12),
-                            CommentsList(),
+                            CommentsList(product: widget.product),
                           ],
                         ),
                       ),
