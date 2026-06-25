@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:market/core/api_services.dart';
 import 'package:market/features/proudct_details/logic/models/rate_model.dart';
 import 'package:meta/meta.dart';
@@ -68,8 +69,12 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       emit(AddCommentSuccess());
     }
     catch(e){
-      log(e.toString());
-      emit(AddCommentError(e.toString()));
+      if (e is DioException) {
+    log("STATUS => ${e.response?.statusCode}");
+    log("DATA => ${e.response?.data}");
+  }
+  log(e.toString());
+  emit(AddCommentError(e.toString()));
     }
   }
 

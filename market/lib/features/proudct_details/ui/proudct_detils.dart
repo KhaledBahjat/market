@@ -136,7 +136,8 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                                       "for_user": cubit.userId,
                                       "for_proudct": widget.product.proudctId,
                                       "comment": comment,
-                                      "user_name": context.read<AuthCubit>().userData?.name?? ''
+                                      "user_name": context.read<AuthCubit>().userData?.name?? '',
+                                      "rate": cubit.productRate
                                     },
                                   );
                                   if (!context.mounted) {

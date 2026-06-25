@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/model/product_model.dart';
@@ -12,7 +14,7 @@ class CommentsList extends StatelessWidget {
   });
 
   final ProductModel product;
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -37,16 +39,26 @@ class CommentsList extends StatelessWidget {
           );
         }
         if (snapshot.hasData) {
+          log(comments.toString());
           return ListView.builder(
             itemBuilder: (context, index) {
+              final commentData = comments![index];
+              log(commentData.toString());
               return Padding(
                 padding: EdgeInsets.only(bottom: 12.h),
                 child: CommentCard(
-                  userName: 'User $index,',
-                  time: '2 hours ago',
-                  comment:
-                      'This is a sample comment for product $index. It is very useful and I highly recommend it to everyone!',
-                  rating: 4.0,
+                  userName:
+                      (commentData['user_name']?.toString().trim().isNotEmpty ??
+                          false)
+                      ? commentData['user_name']
+                      : 'Anonymous',
+                  time: commentData['created_at'] != null
+                      ? DateTime.parse(
+                          commentData['created_at'],
+                        ).toLocal().toString()
+                      : 'Unknown time',
+                  comment: commentData['comment'] ?? 'No comment provided.',
+                  rating: commentData['rate']?.toDouble() ?? 4.0,
                 ),
               );
             },

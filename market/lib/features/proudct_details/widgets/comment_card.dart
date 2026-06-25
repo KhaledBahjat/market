@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:market/core/helper/spacing.dart';
 
 class CommentCard extends StatelessWidget {
@@ -33,7 +34,9 @@ class CommentCard extends StatelessWidget {
             radius: 22.r,
             backgroundColor: Colors.deepPurple.shade100,
             child: Text(
-              userName.substring(0, 1).toUpperCase(),
+              userName.trim().isNotEmpty
+    ? userName.trim()[0].toUpperCase()
+    : '?',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.deepPurple.shade900,
@@ -56,7 +59,7 @@ class CommentCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      time,
+                      formatDate(time),
                       style: TextStyle(
                         color: Colors.grey.shade600,
                         fontSize: 12.sp,
@@ -89,4 +92,8 @@ class CommentCard extends StatelessWidget {
       ),
     );
   }
+  String formatDate(String date) {
+  return DateFormat('dd/MM/yyyy')
+      .format(DateTime.parse(date));
+}
 }
