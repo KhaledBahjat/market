@@ -6,6 +6,7 @@ import 'package:market/features/auth/nav_bar/ui/main_home.dart';
 import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
 import 'package:market/features/auth/ui/sign_up.dart';
+import 'package:market/features/home/ui/category_result.dart';
 import 'package:market/features/home/ui/search_result.dart';
 import 'package:market/features/profile/ui/edit_profile.dart';
 import 'package:market/features/profile/ui/my_order.dart';
@@ -16,6 +17,11 @@ class RouterGenerator {
   static GoRouter router = GoRouter(
     initialLocation: AppRouts.splashScreen,
     routes: [
+      GoRoute(
+        path: AppRouts.categoryResultScreen,
+        name: AppRouts.categoryResultScreen,
+        builder: (context, state) => CategoryResult(category: state.extra as String? ?? 'Unknown Category'),
+      ),
       GoRoute(
         path: AppRouts.searchScreen,
         name: AppRouts.searchScreen,
