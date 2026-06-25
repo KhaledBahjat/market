@@ -7,4 +7,5 @@ class AppRouts {
     static const String editProfileScreen = '/edit_profile_screen';
     static const String myOrderScreen = '/my_order_screen';
     static const String proudctDetails="/proudct_details";
+    static const String searchScreen="/search_screen";
 }

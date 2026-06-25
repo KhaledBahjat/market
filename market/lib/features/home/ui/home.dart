@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/widgets/cousttom_search_feild.dart';
 import 'package:market/core/widgets/proudct_list.dart';
 import 'package:market/features/home/widgets/categorys_list.dart';
@@ -14,7 +16,7 @@ class Home extends StatelessWidget {
       child: ListView(
         children: [
           Height(height: 5),
-          CustomSearchFeild(),
+          CustomSearchFeild(onPressed: ()=>GoRouter.of(context).pushNamed(AppRouts.searchScreen),),
           Height(height: 20),
           Image.asset('assets/imgs/market.jpg', fit: BoxFit.cover),
           Height(height: 20),
