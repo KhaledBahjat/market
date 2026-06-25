@@ -17,6 +17,7 @@ void main() async {
   Bloc.observer = MyObserver();
   runApp(Market());
 }
+
 class Market extends StatelessWidget {
   const Market({super.key});
   @override

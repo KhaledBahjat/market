@@ -14,7 +14,7 @@ import 'package:market/features/proudct_details/logic/cubit/product_details_cubi
 import 'package:market/features/proudct_details/widgets/comment_list.dart';
 
 class ProudctDetils extends StatefulWidget {
-   ProudctDetils({super.key, required this.product});
+   const ProudctDetils({super.key, required this.product});
   final ProductModel product;
 
   @override
@@ -131,6 +131,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                                   if (comment.isEmpty) {
                                     return;
                                   }
+                                  await context.read<AuthCubit>().getUserData();
                                   await cubit.addComment(
                                     data: {
                                       "for_user": cubit.userId,
