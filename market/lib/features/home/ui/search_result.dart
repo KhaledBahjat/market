@@ -4,8 +4,8 @@ import 'package:market/core/theme/app_colors.dart';
 import 'package:market/core/widgets/proudct_list.dart';
 
 class SearchResult extends StatelessWidget {
-  const SearchResult({super.key});
-
+  const SearchResult({super.key, this.query});
+  final String? query;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +15,11 @@ class SearchResult extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        children:  [
+        children: [
           Height(height: 20),
-          ProudctList(),
+          ProudctList(
+            query: query,
+          ),
         ],
       ),
     );

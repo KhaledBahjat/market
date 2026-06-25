@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/theme/app_colors.dart';
 
-class CustomSearchFeild extends StatelessWidget {
+class CustomSearchFeild extends StatefulWidget {
   CustomSearchFeild({
     super.key,
     this.onPressed,
@@ -10,14 +10,20 @@ class CustomSearchFeild extends StatelessWidget {
   });
   void Function()? onPressed;
   TextEditingController? controller;
+
+  @override
+  State<CustomSearchFeild> createState() => _CustomSearchFeildState();
+}
+
+class _CustomSearchFeildState extends State<CustomSearchFeild> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
+      controller: widget.controller,
       decoration: InputDecoration(
         label: Text('Search in Market'),
         suffixIcon: ElevatedButton.icon(
-          onPressed: onPressed,
+          onPressed: widget.onPressed,
           label: Icon(Icons.search),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.kPrimaryColor,

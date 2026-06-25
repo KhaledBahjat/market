@@ -19,7 +19,7 @@ class RouterGenerator {
       GoRoute(
         path: AppRouts.searchScreen,
         name: AppRouts.searchScreen,
-        builder: (context, state) => SearchResult(),
+        builder: (context, state) => SearchResult(query: state.extra as String?,),
       ),
       GoRoute(
         path: AppRouts.splashScreen,
