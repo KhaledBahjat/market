@@ -7,7 +7,7 @@ import 'package:market/core/widgets/proudct_list.dart';
 import 'package:market/features/home/widgets/categorys_list.dart';
 
 class Home extends StatefulWidget {
-  Home({
+  const Home({
     super.key,
   });
 
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    searchController?.dispose();
+    searchController.dispose();
     super.dispose();
   }
 }

@@ -10,7 +10,6 @@ class ProudctList extends StatelessWidget {
     super.key,
     this.query,
     this.category,
-
   });
   final String? query;
   final String? category;
@@ -24,10 +23,11 @@ class ProudctList extends StatelessWidget {
           // TODO: implement listener
         },
         builder: (context, state) {
+          HomeCubit cubit = context.read<HomeCubit>();
           List<ProductModel> products = query != null
               ? context.read<HomeCubit>().searchResults
               : category != null
-                  ? context.read<HomeCubit>().categoryResults
+              ? context.read<HomeCubit>().categoryResults
               : context.read<HomeCubit>().products;
           return state is GetDataLoading
               ? Center(
@@ -47,7 +47,12 @@ class ProudctList extends StatelessWidget {
                 )
               : ListView.builder(
                   itemCount: products.length,
-                  itemBuilder: (context, index) => ProudctCard(products[index]),
+                  itemBuilder: (context, index) => ProudctCard(
+                    products[index],
+                    onPressed: () {
+                      cubit.addProductToFavorite(products[index].proudctId);
+                    },
+                  ),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                 );

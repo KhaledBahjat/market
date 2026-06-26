@@ -10,8 +10,10 @@ import 'package:market/core/theme/app_colors.dart';
 class ProudctCard extends StatelessWidget {
   const ProudctCard(this.product, {
     super.key,
+    this.onPressed,
   });
   final ProductModel product;
+  final Function()?onPressed;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -101,7 +103,7 @@ class ProudctCard extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: onPressed,
                         icon: Icon(
                           Icons.favorite_border,
                           color: AppColors.kPrimaryColor,
