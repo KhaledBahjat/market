@@ -19,3 +19,11 @@ final class AddToFavoriteError extends HomeState{
   final String error;
   AddToFavoriteError(this.error);
 }
+
+
+final class RemoveFromFavoriteLoading extends HomeState{}
+final class RemoveFromFavoriteSuccess extends HomeState{}
+final class RemoveFromFavoriteError extends HomeState{
+  final String error;
+  RemoveFromFavoriteError(this.error);
+}

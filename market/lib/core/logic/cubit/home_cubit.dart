@@ -14,6 +14,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<ProductModel> products = [];
   List<ProductModel> searchResults = [];
   List<ProductModel> categoryResults = [];
+  Map<String,bool> favoriteProudcts={};
   final String userId=Supabase.instance.client.auth.currentUser!.id;
   Future<void> getProducts({String? query,String? category}) async {
     emit(GetDataLoading());
@@ -46,13 +47,30 @@ class HomeCubit extends Cubit<HomeState> {
         }
       );
       log(response.toString());
+      favoriteProudcts.addAll({productId:true});
       emit(AddToFavoriteSuccess());
     } catch (e) {
       log(e.toString());
       emit(AddToFavoriteError(e.toString()));
     }
   }
-
+bool isProductFavorite(String productId) {
+    return favoriteProudcts[productId] ?? false;
+  }
+  Future<void>removeProductFromFavorite(String productId) async {
+    emit(RemoveFromFavoriteLoading());
+    try {
+      final response = await _apiServices.deleteData(
+        "favorite?for_product=eq.$productId&for_user=eq.$userId",
+      );
+      log(response.toString());
+      favoriteProudcts.removeWhere((key, value) => key == productId);
+      emit(RemoveFromFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(RemoveFromFavoriteError(e.toString()));
+    }
+  }
   void searchProducts(String? query) {
     if (query != null && query.isNotEmpty) {
       searchResults.clear();

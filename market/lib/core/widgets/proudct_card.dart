@@ -11,9 +11,11 @@ class ProudctCard extends StatelessWidget {
   const ProudctCard(this.product, {
     super.key,
     this.onPressed,
+    required this.isFavorite,
   });
   final ProductModel product;
   final Function()?onPressed;
+  final bool isFavorite;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -105,8 +107,8 @@ class ProudctCard extends StatelessWidget {
                       IconButton(
                         onPressed: onPressed,
                         icon: Icon(
-                          Icons.favorite_border,
-                          color: AppColors.kPrimaryColor,
+                          Icons.favorite,
+                          color:isFavorite ? AppColors.kPrimaryColor : Colors.grey,
                         ),
                       ),
                     ],

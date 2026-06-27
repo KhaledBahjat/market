@@ -48,9 +48,18 @@ class ProudctList extends StatelessWidget {
               : ListView.builder(
                   itemCount: products.length,
                   itemBuilder: (context, index) => ProudctCard(
+                    isFavorite: cubit.isProductFavorite(
+                      products[index].proudctId,
+                    ),
                     products[index],
                     onPressed: () {
-                      cubit.addProductToFavorite(products[index].proudctId);
+                      cubit.isProductFavorite(products[index].proudctId)
+                          ? cubit.removeProductFromFavorite(
+                              products[index].proudctId,
+                            )
+                          : cubit.addProductToFavorite(
+                              products[index].proudctId,
+                            );
                     },
                   ),
                   shrinkWrap: true,
