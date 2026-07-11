@@ -17,6 +17,13 @@ class CustomSearchFeild extends StatelessWidget {
       controller: controller,
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+            color: AppColors.kBordersideColor,
+            width: 2,
+          ),
+        ),
         hintText: 'Search products, brands, or categories',
         prefixIcon: const Icon(Icons.search_rounded),
         suffixIcon: Padding(

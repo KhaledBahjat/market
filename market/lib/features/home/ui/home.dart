@@ -46,17 +46,17 @@ class _HomeState extends State<Home> {
               Text(
                 'Discover products you will actually want',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.kWhiteColor,
-                    ),
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.kWhiteColor,
+                ),
               ),
               const Height(height: 8),
               Text(
                 'Browse fast, search instantly, and keep your favorites in one place.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.kGreyColor,
-                      height: 1.4,
-                    ),
+                  color: AppColors.kGreyColor,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 16),
               CustomSearchFeild(
@@ -94,15 +94,15 @@ class _HomeState extends State<Home> {
             Text(
               'Popular Categories',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                fontWeight: FontWeight.w700,
+              ),
             ),
             Text(
               'See all',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
@@ -115,14 +115,14 @@ class _HomeState extends State<Home> {
             Text(
               'Recently Added',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                fontWeight: FontWeight.w700,
+              ),
             ),
             Text(
               'Fresh picks',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.black54,
-                  ),
+                color: Colors.black54,
+              ),
             ),
           ],
         ),
