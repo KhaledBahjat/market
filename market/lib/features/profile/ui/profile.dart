@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:market/core/helper/pref_helper.dart';
 import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
@@ -9,10 +10,10 @@ import 'package:market/features/auth/logic/models/user_model.dart';
 import 'package:market/features/profile/widgets/custom_card_profile.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
-
+  Profile({super.key});
   @override
   Widget build(BuildContext context) {
+    final prefHelper = PrefHelper();
     return BlocProvider(
       create: (context) => AuthCubit()..getUserData(),
       child: BlocConsumer<AuthCubit, AuthState>(
@@ -36,11 +37,11 @@ class Profile extends StatelessWidget {
               ),
             );
           }
-          if (state is GetUserDataSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('User data loaded successfully!')),
-            );
-          }
+          // if (state is GetUserDataSuccess) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     const SnackBar(content: Text('User data loaded successfully!')),
+          //   );
+          // }
           if (state is LogoutLoading) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Logging out...')),
@@ -99,17 +100,31 @@ class Profile extends StatelessWidget {
                           // If the asset isn't present, Flutter will still render an empty circle.
                         ),
                         Height(height: 12),
-                        Text(
-                          user?.name ?? 'User Name',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        FutureBuilder<String?>(
+                          future: prefHelper.getUserData('userName'),
+                          builder: (context, snapshot) {
+                            final displayName =
+                                user?.name ?? snapshot.data ?? 'User Name';
+                            return Text(
+                              displayName,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
                         ),
                         Height(height: 4),
-                        Text(
-                          user?.email ?? 'user@example.com',
-                          style: TextStyle(color: Colors.grey),
+                        FutureBuilder<String?>(
+                          future: prefHelper.getUserData('userEmail'),
+                          builder: (context, snapshot) {
+                            final displayEmail =
+                                user?.email ?? snapshot.data ?? 'user@example.com';
+                            return Text(
+                              displayEmail,
+                              style: TextStyle(color: Colors.grey),
+                            );
+                          },
                         ),
                       ],
                     ),
