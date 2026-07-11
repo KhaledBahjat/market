@@ -21,11 +21,8 @@ class _SignUpState extends State<SignUp> {
   bool isPassword = false;
 
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -42,120 +39,174 @@ class _SignUpState extends State<SignUp> {
           }
         },
         builder: (context, state) {
-          var signUpCubit = context.read<AuthCubit>();
+          final signUpCubit = context.read<AuthCubit>();
+
           return Scaffold(
-            body:state is SignUpLoading
-                ? const Center(child: CircularProgressIndicator(
-                    color: AppColors.kPrimaryColor,
-                ))
+            body: state is SignUpLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.kPrimaryColor,
+                    ),
+                  )
                 : SingleChildScrollView(
                     child: SafeArea(
-                      // shield scrool when keybord shown
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Height(height: 50),
-                                            Text(
-                        'Create Your Account Now',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                                            ),
-                                            Height(height: 24),
-                                            Card(
-                        color: AppColors.kWhiteColor,
-                        margin: EdgeInsets.all(24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16.r)),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+                        child: Form(
+                          key: _formKey,
                           child: Column(
                             children: [
-                              const Height(height: 20),
-                              CustomTextFormFeild(
-                        
-                                controller: _nameController,
-                                labelText: 'Name',
-                                hint: 'user Name',
-                              ),
-                              Height(height: 20),
-                              CustomTextFormFeild(
-                                controller: _emailController,
-                                labelText: 'Email',
-                                hint: 'user Email',
-                              ),
-                              const Height(height: 20),
-                              CustomTextFormFeild(
-                                controller: _passwordController,
-                                obscureText: isPassword,
-                                labelText: 'Password',
-                                hint: '**************',
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    isPassword = !isPassword;
-                                    (context as Element).markNeedsBuild();
-                                  },
-                                  icon: Icon(
-                                    isPassword
-                                        ? Icons.visibility
-                                        : Icons.visibility_off_outlined,
+                              const SizedBox(height: 10),
+                              Container(
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF1E293B),
+                                      Color(0xFF111827),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(28),
+                                  border: Border.all(
+                                    color: AppColors.kBordersideColor,
                                   ),
                                 ),
-                              ),
-                              Height(height: 10),
-                        
-                              CustomButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    signUpCubit.signUpWithEmailAndPassword(
-                                      name: _nameController.text,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    );
-                                  }
-                                },
-                                buttonText: 'Sign Up',
-                              ),
-                              Height(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text('Already have an account?'),
-                                  TextButton(
-                                    onPressed: () => GoRouter.of(
-                                      context,
-                                    ).pushReplacement(AppRouts.signInScreen),
-                                    child: Text(
-                                      'Sign In',
-                                      style: TextStyle(
-                                        color: AppColors.kPrimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Create Your Account',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            fontSize: 26.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppColors.kWhiteColor,
+                                          ),
                                     ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Join the market, save products, and shop in a clean dark interface.',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: AppColors.kGreyColor,
+                                            height: 1.4,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Card(
+                                color: const Color(0xFF121B2E),
+                                margin: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(24.r),
                                   ),
-                                ],
+                                  side: BorderSide(
+                                    color: AppColors.kBordersideColor,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18),
+                                  child: Column(
+                                    children: [
+                                      const Height(height: 10),
+                                      CustomTextFormFeild(
+                                        controller: _nameController,
+                                        labelText: 'Name',
+                                        hint: 'user Name',
+                                      ),
+                                      const Height(height: 18),
+                                      CustomTextFormFeild(
+                                        controller: _emailController,
+                                        labelText: 'Email',
+                                        hint: 'user Email',
+                                      ),
+                                      const Height(height: 18),
+                                      CustomTextFormFeild(
+                                        controller: _passwordController,
+                                        obscureText: isPassword,
+                                        labelText: 'Password',
+                                        hint: '**************',
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isPassword = !isPassword;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            isPassword
+                                                ? Icons.visibility
+                                                : Icons.visibility_off_outlined,
+                                          ),
+                                        ),
+                                      ),
+                                      const Height(height: 10),
+                                      CustomButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!.validate()) {
+                                            signUpCubit.signUpWithEmailAndPassword(
+                                              name: _nameController.text,
+                                              email: _emailController.text,
+                                              password: _passwordController.text,
+                                            );
+                                          }
+                                        },
+                                        buttonText: 'Sign Up',
+                                      ),
+                                      const Height(height: 12),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Already have an account?',
+                                            style: TextStyle(
+                                              color: AppColors.kGreyColor,
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => GoRouter.of(
+                                              context,
+                                            ).pushReplacement(
+                                              AppRouts.signInScreen,
+                                            ),
+                                            child: Text(
+                                              'Sign In',
+                                              style: TextStyle(
+                                                color: AppColors.kPrimaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
-                                            ),
-                                          ],
-                                        ),
                       ),
-              ),
-            ),
+                    ),
+                  ),
           );
         },
       ),
     );
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
-    
+    super.dispose();
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();

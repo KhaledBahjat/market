@@ -10,7 +10,7 @@ import 'package:market/features/auth/logic/models/user_model.dart';
 import 'package:market/features/profile/widgets/custom_card_profile.dart';
 
 class Profile extends StatelessWidget {
-  Profile({super.key});
+  const Profile({super.key});
   @override
   Widget build(BuildContext context) {
     final prefHelper = PrefHelper();
@@ -19,9 +19,6 @@ class Profile extends StatelessWidget {
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is GetUserDataFailure) {
-            Center(
-              child: Text('Failed to load user data: ${state.errorMessage}'),
-            );
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -30,18 +27,6 @@ class Profile extends StatelessWidget {
               ),
             );
           }
-          if (state is GetUserDataLoading) {
-            Center(
-              child: CircularProgressIndicator(
-                color: AppColors.kPrimaryColor,
-              ),
-            );
-          }
-          // if (state is GetUserDataSuccess) {
-          //   ScaffoldMessenger.of(context).showSnackBar(
-          //     const SnackBar(content: Text('User data loaded successfully!')),
-          //   );
-          // }
           if (state is LogoutLoading) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Logging out...')),
@@ -72,34 +57,49 @@ class Profile extends StatelessWidget {
         builder: (context, state) {
           UserModel? user = context.read<AuthCubit>().userData;
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('Profile'),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    GoRouter.of(context).push(AppRouts.editProfileScreen);
-                  },
-                  icon: const Icon(Icons.edit),
-                  tooltip: 'Edit profile',
-                ),
-              ],
-            ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 22),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 8),
-                  Center(
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF1E293B),
+                          const Color(0xFF111827),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(
+                        color: AppColors.kBordersideColor.withValues(alpha: 0.8),
+                      ),
+                    ),
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 48,
-                          backgroundImage: AssetImage('assets/imgs/test.jpg'),
-                          // If the asset isn't present, Flutter will still render an empty circle.
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            onPressed: () {
+                              GoRouter.of(context).push(AppRouts.editProfileScreen);
+                            },
+                            icon: const Icon(Icons.edit),
+                            style: IconButton.styleFrom(
+                              backgroundColor: const Color(0xFF0F172A),
+                              foregroundColor: AppColors.kPrimaryColor,
+                            ),
+                            tooltip: 'Edit profile',
+                          ),
                         ),
-                        Height(height: 12),
+                        CircleAvatar(
+                          radius: 52,
+                          backgroundColor: AppColors.kPrimaryColor.withValues(alpha: 0.2),
+                          backgroundImage: const AssetImage('assets/imgs/test.jpg'),
+                        ),
+                        Height(height: 14),
                         FutureBuilder<String?>(
                           future: prefHelper.getUserData('userName'),
                           builder: (context, snapshot) {
@@ -107,14 +107,15 @@ class Profile extends StatelessWidget {
                                 user?.name ?? snapshot.data ?? 'User Name';
                             return Text(
                               displayName,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.kWhiteColor,
+                                  ),
                             );
                           },
                         ),
-                        Height(height: 4),
+                        const SizedBox(height: 4),
                         FutureBuilder<String?>(
                           future: prefHelper.getUserData('userEmail'),
                           builder: (context, snapshot) {
@@ -122,14 +123,26 @@ class Profile extends StatelessWidget {
                                 user?.email ?? snapshot.data ?? 'user@example.com';
                             return Text(
                               displayEmail,
-                              style: TextStyle(color: Colors.grey),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.kGreyColor,
+                                  ),
                             );
                           },
                         ),
                       ],
                     ),
                   ),
-                  const Height(height: 24),
+                  const Height(height: 20),
+
+                  Text(
+                    'Account',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.kWhiteColor,
+                        ),
+                  ),
+                  const Height(height: 12),
 
                   CustomCard(
                     icon: Icons.favorite_border,
@@ -164,16 +177,32 @@ class Profile extends StatelessWidget {
 
                   const Height(height: 24),
 
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                        color: AppColors.kPrimaryColor,
+                        width: 1.5,
+                      ),
+                      shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
+                      foregroundColor: AppColors.kPrimaryColor,
                     ),
                     onPressed: () {
                       context.read<AuthCubit>().signOut();
                     },
-                    icon: const Icon(Icons.logout),
-                    label: const Text('Log out'),
+                    icon: const Icon(
+                      Icons.logout,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                    label: const Text(
+                      'Log out',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
                   ),
                 ],
               ),

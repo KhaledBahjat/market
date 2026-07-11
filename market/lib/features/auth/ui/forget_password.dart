@@ -74,7 +74,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                       Height(height: 24),
                       Card(
-                        color: AppColors.kWhiteColor,
+                        color: AppColors.kBordersideColor,
                         margin: EdgeInsets.all(24),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(16.r)),

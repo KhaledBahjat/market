@@ -5,21 +5,21 @@ import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class SignInWithGoogleButton extends StatelessWidget {
-   SignInWithGoogleButton({
+  const SignInWithGoogleButton({
     super.key,
     this.onPressed,
   });
-  void Function()? onPressed;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.kWhiteColor,
+        backgroundColor: const Color(0xFF0F172A),
         minimumSize: Size(double.infinity, 50.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
-          side: BorderSide(color: AppColors.kGreyColor)
+          side: BorderSide(color: AppColors.kBordersideColor),
         ),
       ),
       child: Row(
@@ -30,7 +30,7 @@ class SignInWithGoogleButton extends StatelessWidget {
           Text(
             'Sign In with Google',
             style: TextStyle(
-              color: Colors.red,
+              color: AppColors.kWhiteColor,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),

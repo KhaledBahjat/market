@@ -56,102 +56,148 @@ class _SignInState extends State<SignIn> {
                   )
                 : SingleChildScrollView(
                     child: SafeArea(
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            Height(height: 50),
-                            Text(
-                              'Welcome To Our Market',
-                              style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Height(height: 24),
-                            Card(
-                              color: AppColors.kWhiteColor,
-                              margin: EdgeInsets.all(24),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(16.r),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              Container(
+                                padding: const EdgeInsets.all(18),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      const Color(0xFF1E293B),
+                                      const Color(0xFF111827),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(28),
+                                  border: Border.all(
+                                    color: AppColors.kBordersideColor,
+                                  ),
                                 ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(16),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Height(height: 20),
-                                    CustomTextFormFeild(
-                                      controller: emailController,
-                                      labelText: 'Email',
-                                    ),
-                                    const Height(height: 20),
-                                    CustomTextFormFeild(
-                                      controller: passwordController,
-                                      obscureText: isPassword,
-                                      labelText: 'Password',
-                                      hint: '**************',
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isPassword = !isPassword;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          isPassword
-                                              ? Icons.visibility
-                                              : Icons.visibility_off_outlined,
-                                        ),
-                                      ),
-                                    ),
-                                    ForgetPasswordWidget(),
-                                    Height(height: 10),
-
-                                    CustomButton(
-                                      onPressed: () {
-                                        if (formKey.currentState!.validate()) {
-                                          authCubit.loginWithEmailAndPassword(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          );
-                                        }
-                                      },
-                                      buttonText: 'Sign In',
-                                    ),
-                                    Height(height: 10),
-                                    // TODO: sign in with google
-                                    SignInWithGoogleButton(
-                                      onPressed: () => authCubit.signInWithGoogle(),
-                                    ),
-                                    Height(height: 10),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('Don\'t have an account?'),
-                                        TextButton(
-                                          onPressed: () =>
-                                              GoRouter.of(
-                                                context,
-                                              ).pushReplacement(
-                                                AppRouts.signUpScreen,
-                                              ),
-                                          child: Text(
-                                            'Sign Up',
-                                            style: TextStyle(
-                                              color: AppColors.kPrimaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                    Text(
+                                      'Welcome Back',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                            fontSize: 26.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppColors.kWhiteColor,
                                           ),
-                                        ),
-                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Sign in to continue shopping, saving, and tracking your orders.',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: AppColors.kGreyColor,
+                                            height: 1.4,
+                                          ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 20),
+                              Card(
+                                color: const Color(0xFF121B2E),
+                                margin: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(24.r),
+                                  ),
+                                  side: BorderSide(
+                                    color: AppColors.kBordersideColor,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18),
+                                  child: Column(
+                                    children: [
+                                      const Height(height: 10),
+                                      CustomTextFormFeild(
+                                        controller: emailController,
+                                        labelText: 'Email',
+                                      ),
+                                      const Height(height: 18),
+                                      CustomTextFormFeild(
+                                        controller: passwordController,
+                                        obscureText: isPassword,
+                                        labelText: 'Password',
+                                        hint: '**************',
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isPassword = !isPassword;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            isPassword
+                                                ? Icons.visibility
+                                                : Icons.visibility_off_outlined,
+                                          ),
+                                        ),
+                                      ),
+                                      ForgetPasswordWidget(),
+                                      const SizedBox(height: 6),
+                                      CustomButton(
+                                        onPressed: () {
+                                          if (formKey.currentState!.validate()) {
+                                            authCubit.loginWithEmailAndPassword(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            );
+                                          }
+                                        },
+                                        buttonText: 'Sign In',
+                                      ),
+                                      const Height(height: 10),
+                                      SignInWithGoogleButton(
+                                        onPressed: () => authCubit.signInWithGoogle(),
+                                      ),
+                                      const Height(height: 12),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Don\'t have an account?',
+                                            style: TextStyle(
+                                              color: AppColors.kGreyColor,
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                GoRouter.of(
+                                                  context,
+                                                ).pushReplacement(
+                                                  AppRouts.signUpScreen,
+                                                ),
+                                            child: Text(
+                                              'Sign Up',
+                                              style: TextStyle(
+                                                color: AppColors.kPrimaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

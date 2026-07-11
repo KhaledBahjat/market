@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class CustomTextFormFeild extends StatelessWidget {
-  CustomTextFormFeild({
+  const CustomTextFormFeild({
     super.key,
     required this.labelText,
     this.suffixIcon,
@@ -15,7 +15,7 @@ class CustomTextFormFeild extends StatelessWidget {
   final Widget? suffixIcon;
   final String? hint;
   final bool? obscureText;
-  TextEditingController? controller;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -33,7 +33,7 @@ class CustomTextFormFeild extends StatelessWidget {
         label: Text(labelText),
         hintText: hint ?? 'userexample@example.com',
         hintStyle: TextStyle(color: AppColors.kGreyColor),
-        labelStyle: TextStyle(color: AppColors.kBlackColor),
+        labelStyle: TextStyle(color: AppColors.kWhiteColor),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.r),
           borderSide: BorderSide(
@@ -41,6 +41,8 @@ class CustomTextFormFeild extends StatelessWidget {
             width: 2.sp,
           ),
         ),
+        filled: true,
+        fillColor: const Color(0xFF0F172A),
 
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.r),
@@ -52,11 +54,12 @@ class CustomTextFormFeild extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.r),
           borderSide: BorderSide(
-            color: AppColors.kBordersideColor,
+            color: AppColors.kPrimaryColor,
             width: 2.sp,
           ),
         ),
       ),
+      style: TextStyle(color: AppColors.kWhiteColor),
     );
   }
 }

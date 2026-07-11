@@ -1,61 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/theme/app_colors.dart';
 
-class CustomSearchFeild extends StatefulWidget {
-  CustomSearchFeild({
+class CustomSearchFeild extends StatelessWidget {
+  const CustomSearchFeild({
     super.key,
     this.onPressed,
     this.controller,
   });
-  void Function()? onPressed;
-  TextEditingController? controller;
 
-  @override
-  State<CustomSearchFeild> createState() => _CustomSearchFeildState();
-}
+  final void Function()? onPressed;
+  final TextEditingController? controller;
 
-class _CustomSearchFeildState extends State<CustomSearchFeild> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: widget.controller,
+      controller: controller,
+      textInputAction: TextInputAction.search,
       decoration: InputDecoration(
-        label: Text('Search in Market'),
-        suffixIcon: ElevatedButton.icon(
-          onPressed: widget.onPressed,
-          label: Icon(Icons.search),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.kPrimaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        hintText: 'Search products, brands, or categories',
+        prefixIcon: const Icon(Icons.search_rounded),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.all(6),
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              backgroundColor: AppColors.kPrimaryColor,
+              foregroundColor: AppColors.kWhiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
-            iconSize: 30.sp,
-            iconColor: AppColors.kWhiteColor,
-          ),
-        ),
-        hintStyle: TextStyle(color: AppColors.kGreyColor),
-        labelStyle: TextStyle(color: AppColors.kBlackColor),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(
-            color: AppColors.kBordersideColor,
-            width: 2.sp,
-          ),
-        ),
-
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(
-            color: AppColors.kBordersideColor,
-            width: 2.sp,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          borderSide: BorderSide(
-            color: AppColors.kBordersideColor,
-            width: 2.sp,
+            child: const Icon(Icons.arrow_forward_rounded),
           ),
         ),
       ),

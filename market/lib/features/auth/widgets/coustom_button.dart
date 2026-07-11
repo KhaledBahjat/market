@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.kPrimaryColor,
+        foregroundColor: AppColors.kScaffoldColor,
         minimumSize: Size(double.infinity, 50.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
@@ -22,7 +23,7 @@ class CustomButton extends StatelessWidget {
       child: Text(
         buttonText,
         style: TextStyle(
-          color: AppColors.kWhiteColor,
+          color: AppColors.kScaffoldColor,
           fontSize: 16.sp,
           fontWeight: FontWeight.bold,
         ),
