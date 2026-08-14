@@ -17,7 +17,7 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   bool isPasswordHidden = true;
   bool isConfirmPasswordHidden = true;
-
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,7 +30,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 Height(height: 50),
                 Text(
                   'Reset Your Password',
-                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Height(height: 16),
                 Padding(
@@ -56,7 +59,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     child: Column(
                       children: [
                         const Height(height: 20),
-                        CustomTextFormFeild(labelText: 'Email'),
+                        CustomTextFormFeild(
+                          controller: controller,
+                          labelText: 'Email',
+                        ),
                         const Height(height: 20),
                         CustomButton(
                           onPressed: () {

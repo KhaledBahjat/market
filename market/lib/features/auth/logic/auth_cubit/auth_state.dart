@@ -17,10 +17,28 @@ final class SignInError extends AuthState {
 
 final class SignUpLoading extends AuthState {}
 
-final class SignUpSucces extends AuthState {}
+final class SignUpSucces extends AuthState {
+  final String?message;
+
+  SignUpSucces(this.message);
+
+}
 
 final class SignUpError extends AuthState {
   final String errorMessage;
 
   SignUpError(this.errorMessage);
+}
+final class AuthAuthenticated extends AuthState {}
+
+final class AuthUnauthenticated extends AuthState {}
+
+final class SignOutLoading extends AuthState {}
+
+final class SignOutSuccess extends AuthState {}
+
+final class SignOutError extends AuthState {
+  final String errorMessage;
+
+  SignOutError(this.errorMessage);
 }

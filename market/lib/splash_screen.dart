@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'dart:math' as math;
+
+import 'package:market/features/auth/logic/auth_cubit/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,8 +32,12 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AuthCubit>().checkAuthState();
+      }
+    });
     _initializeAnimations();
-    _navigateToHome();
   }
 
   void _initializeAnimations() {
@@ -54,12 +64,13 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _slideController, curve: Curves.easeOut),
-    );
+    _slideAnimation =
+        Tween<Offset>(
+          begin: const Offset(0, 0.5),
+          end: Offset.zero,
+        ).animate(
+          CurvedAnimation(parent: _slideController, curve: Curves.easeOut),
+        );
 
     // Rotation animation for decorative elements
     _rotateController = AnimationController(
@@ -86,14 +97,6 @@ class _SplashScreenState extends State<SplashScreen>
     _slideController.forward();
   }
 
-  void _navigateToHome() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        context.go('/home_screen');
-      }
-    });
-  }
-
   @override
   void dispose() {
     _fadeController.dispose();
@@ -106,214 +109,232 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0F0F1E),
-              Color(0xFF1A1A2E),
-              Color(0xFF16213E),
-            ],
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        log('Splash received state: $state');
+
+        if (state is AuthAuthenticated) {
+          context.go(AppRouts.homeScreen);
+        }
+        if (state is AuthUnauthenticated) {
+          context.go(AppRouts.signInScreen);
+        }
+      },
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF0F0F1E),
+                Color(0xFF1A1A2E),
+                Color(0xFF16213E),
+              ],
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
-            // Animated decorative circles - dark theme
-            Positioned(
-              top: -80,
-              right: -60,
-              child: AnimatedBuilder(
-                animation: _rotateAnimation,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _rotateAnimation.value,
-                    child: Container(
-                      width: 280.w,
-                      height: 280.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF00D4FF).withValues(alpha: 0.08),
-                            Color(0xFF0099CC).withValues(alpha: 0.03),
+          child: Stack(
+            children: [
+              // Animated decorative circles - dark theme
+              Positioned(
+                top: -80,
+                right: -60,
+                child: AnimatedBuilder(
+                  animation: _rotateAnimation,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _rotateAnimation.value,
+                      child: Container(
+                        width: 280.w,
+                        height: 280.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF00D4FF).withValues(alpha: 0.08),
+                              Color(0xFF0099CC).withValues(alpha: 0.03),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF00D4FF).withValues(alpha: 0.1),
+                              blurRadius: 50,
+                            ),
                           ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF00D4FF).withValues(alpha: 0.1),
-                            blurRadius: 50,
-                          ),
-                        ],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            Positioned(
-              bottom: -100,
-              left: -80,
-              child: AnimatedBuilder(
-                animation: _rotateAnimation,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: -_rotateAnimation.value * 0.5,
-                    child: Container(
-                      width: 320.w,
-                      height: 320.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFF006E).withValues(alpha: 0.06),
-                            Color(0xFFFB5607).withValues(alpha: 0.02),
+              Positioned(
+                bottom: -100,
+                left: -80,
+                child: AnimatedBuilder(
+                  animation: _rotateAnimation,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: -_rotateAnimation.value * 0.5,
+                      child: Container(
+                        width: 320.w,
+                        height: 320.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFFFF006E).withValues(alpha: 0.06),
+                              Color(0xFFFB5607).withValues(alpha: 0.02),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFFFF006E).withValues(alpha: 0.08),
+                              blurRadius: 50,
+                            ),
                           ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFFFF006E).withValues(alpha: 0.08),
-                            blurRadius: 50,
-                          ),
-                        ],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            // Main content
-            Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Logo with animations
-                    FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: ScaleTransition(
-                        scale: _scaleAnimation,
-                        child: ScaleTransition(
-                          scale: _pulseAnimation,
-                          child: Container(
-                            width: 160.w,
-                            height: 160.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Color(0xFF00D4FF),
-                                  Color(0xFF0099CC),
-                                ],
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFF00D4FF).withValues(alpha: 0.6),
-                                  blurRadius: 50,
-                                  spreadRadius: 8,
-                                  offset: const Offset(0, 20),
-                                ),
-                                BoxShadow(
-                                  color: Color(0xFF0099CC).withValues(alpha: 0.4),
-                                  blurRadius: 25,
-                                  spreadRadius: 3,
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/imgs/market.jpg',
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Center(
-                                    child: Icon(
-                                      Icons.shopping_bag_rounded,
-                                      size: 70.sp,
-                                      color: Colors.white,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 50.h),
-                    // App name with slide animation
-                    SlideTransition(
-                      position: _slideAnimation,
-                      child: FadeTransition(
+              // Main content
+              Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Logo with animations
+                      FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Column(
-                          children: [
-                            Text(
-                              'Market',
-                              style: TextStyle(
-                                fontSize: 48.sp,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                                letterSpacing: 2.0,
-                                shadows: [
-                                  Shadow(
-                                    color: Color(0xFF00D4FF).withValues(alpha: 0.6),
-                                    blurRadius: 15,
-                                    offset: const Offset(0, 5),
+                        child: ScaleTransition(
+                          scale: _scaleAnimation,
+                          child: ScaleTransition(
+                            scale: _pulseAnimation,
+                            child: Container(
+                              width: 160.w,
+                              height: 160.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF00D4FF),
+                                    Color(0xFF0099CC),
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(
+                                      0xFF00D4FF,
+                                    ).withValues(alpha: 0.6),
+                                    blurRadius: 50,
+                                    spreadRadius: 8,
+                                    offset: const Offset(0, 20),
+                                  ),
+                                  BoxShadow(
+                                    color: Color(
+                                      0xFF0099CC,
+                                    ).withValues(alpha: 0.4),
+                                    blurRadius: 25,
+                                    spreadRadius: 3,
                                   ),
                                 ],
                               ),
-                            ),
-                            SizedBox(height: 14.h),
-                            Container(
-                              height: 4.h,
-                              width: 70.w,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF00D4FF),
-                                    Color(0xFFFF006E),
-                                  ],
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/imgs/market.jpg',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Center(
+                                      child: Icon(
+                                        Icons.shopping_bag_rounded,
+                                        size: 70.sp,
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  },
                                 ),
-                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            SizedBox(height: 18.h),
-                            Text(
-                              'Premium Shopping',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.white.withValues(alpha: 0.8),
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              'Experience',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.white.withValues(alpha: 0.6),
-                                letterSpacing: 1.0,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 80.h),
-                    // Modern loading indicator
-                    _buildModernLoader(),
-                  ],
+                      SizedBox(height: 50.h),
+                      // App name with slide animation
+                      SlideTransition(
+                        position: _slideAnimation,
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Market',
+                                style: TextStyle(
+                                  fontSize: 48.sp,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  letterSpacing: 2.0,
+                                  shadows: [
+                                    Shadow(
+                                      color: Color(
+                                        0xFF00D4FF,
+                                      ).withValues(alpha: 0.6),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 14.h),
+                              Container(
+                                height: 4.h,
+                                width: 70.w,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF00D4FF),
+                                      Color(0xFFFF006E),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              SizedBox(height: 18.h),
+                              Text(
+                                'Premium Shopping',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white.withValues(alpha: 0.8),
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                'Experience',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white.withValues(alpha: 0.6),
+                                  letterSpacing: 1.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 80.h),
+                      // Modern loading indicator
+                      _buildModernLoader(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

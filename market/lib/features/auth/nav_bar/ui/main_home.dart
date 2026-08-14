@@ -18,7 +18,7 @@ class MainHome extends StatelessWidget {
       create: (context) => NavBarCubit(),
       child: BlocBuilder<NavBarCubit, NavBarState>(
         builder: (context, state) {
-         NavBarCubit cubit= context.read<NavBarCubit>();
+          NavBarCubit cubit = context.read<NavBarCubit>();
           return Scaffold(
             body: SafeArea(child: screens[cubit.currentINdex]),
             bottomNavigationBar: Padding(
@@ -34,7 +34,9 @@ class MainHome extends StatelessWidget {
                 color: Colors.grey,
                 activeColor: AppColors.kPrimaryColor,
                 iconSize: 24,
-                tabBackgroundColor: AppColors.kPrimaryColor.withValues(alpha: 0.1),
+                tabBackgroundColor: AppColors.kPrimaryColor.withValues(
+                  alpha: 0.1,
+                ),
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 tabs: [
                   GButton(icon: Icons.home, text: 'Home'),
