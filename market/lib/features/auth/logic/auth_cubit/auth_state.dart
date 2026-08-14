@@ -42,3 +42,16 @@ final class SignOutError extends AuthState {
 
   SignOutError(this.errorMessage);
 }
+class ForgotPasswordLoading extends AuthState {}
+
+class ForgotPasswordSuccess extends AuthState {
+  final String message;
+
+  ForgotPasswordSuccess(this.message);
+}
+
+class ForgotPasswordError extends AuthState {
+  final String errorMessage;
+
+  ForgotPasswordError(this.errorMessage);
+}

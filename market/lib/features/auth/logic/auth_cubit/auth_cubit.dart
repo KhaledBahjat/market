@@ -150,4 +150,39 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignOutError('Something went wrong'));
     }
   }
+
+  Future<void> forgotPassword({
+    required String email,
+  }) async {
+    try {
+      emit(ForgotPasswordLoading());
+
+      await clint.auth.resetPasswordForEmail(
+        email.trim(),
+        redirectTo: 'market://reset-password',
+      );
+
+      log('Password reset email sent');
+
+      emit(
+        ForgotPasswordSuccess(
+          'Password reset email has been sent. Please check your email.',
+        ),
+      );
+    } on AuthException catch (e) {
+      log('Forgot password error: ${e.message}');
+      log('Status Code: ${e.statusCode}');
+      log('Code: ${e.code}');
+
+      emit(ForgotPasswordError(e.message));
+    } catch (e) {
+      log('Unexpected error: $e');
+
+      emit(
+        ForgotPasswordError(
+          'Something went wrong. Please try again.',
+        ),
+      );
+    }
+  }
 }
