@@ -133,10 +133,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
-  /**
- * 123359603602-u43of4cohco8197pv81qloa9gar5fepe.apps.googleusercontent.com
- * 
- */
+
 
   Future<void> signOut() async {
     try {
