@@ -18,10 +18,9 @@ final class SignInError extends AuthState {
 final class SignUpLoading extends AuthState {}
 
 final class SignUpSucces extends AuthState {
-  final String?message;
+  final String? message;
 
   SignUpSucces(this.message);
-
 }
 
 final class SignUpError extends AuthState {
@@ -29,6 +28,7 @@ final class SignUpError extends AuthState {
 
   SignUpError(this.errorMessage);
 }
+
 final class AuthAuthenticated extends AuthState {}
 
 final class AuthUnauthenticated extends AuthState {}
@@ -42,6 +42,7 @@ final class SignOutError extends AuthState {
 
   SignOutError(this.errorMessage);
 }
+
 class ForgotPasswordLoading extends AuthState {}
 
 class ForgotPasswordSuccess extends AuthState {
@@ -67,6 +68,7 @@ class GoogleSignInError extends AuthState {
 
   GoogleSignInError(this.errorMessage);
 }
+
 final class AddUserDataLoading extends AuthState {}
 
 final class AddUserDataSuccess extends AuthState {}
@@ -75,4 +77,32 @@ final class AddUserDataError extends AuthState {
   final String message;
 
   AddUserDataError(this.message);
+}
+
+final class GetUserDataLoading extends AuthState {}
+
+final class GetUserDataSuccess extends AuthState {
+  final UserModel user;
+
+  GetUserDataSuccess(this.user);
+}
+
+final class GetUserDataError extends AuthState {
+  final String errorMessage;
+
+  GetUserDataError(this.errorMessage);
+}
+
+final class UpdateUserDataLoading extends AuthState {}
+
+final class UpdateUserDataSuccess extends AuthState {
+  final UserModel user;
+
+  UpdateUserDataSuccess(this.user);
+}
+
+final class UpdateUserDataError extends AuthState {
+  final String errorMessage;
+
+  UpdateUserDataError(this.errorMessage);
 }

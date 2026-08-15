@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:market/core/cache/shared_prefs.dart';
+import 'package:market/core/constant.dart';
+import 'package:market/features/auth/logic/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -55,6 +58,9 @@ class AuthCubit extends Cubit<AuthState> {
 
       log('Login successful');
       log('User ID: ${user.id}');
+
+      // Get from Supabase + save in SharedPreferences
+      await getUserData();
 
       emit(SignInSucces());
     } on AuthException catch (e) {
@@ -111,6 +117,7 @@ class AuthCubit extends Cubit<AuthState> {
       log('Sign Up successful');
       log('User ID: ${user.id}');
       await addUserData(name: name, email: email);
+      await getUserData();
       emit(
         SignUpSucces(
           'Account created successfully.',
@@ -141,7 +148,13 @@ class AuthCubit extends Cubit<AuthState> {
 
       await clint.auth.signOut();
 
+      // Clear cached user data
+      await SharedPrefs.remove(AppKeys.userId);
+      await SharedPrefs.remove(AppKeys.userName);
+      await SharedPrefs.remove(AppKeys.userEmail);
+
       log('Sign out successful');
+      log('Cached user data removed');
 
       emit(SignOutSuccess());
     } on AuthException catch (e) {
@@ -151,6 +164,21 @@ class AuthCubit extends Cubit<AuthState> {
       log('Unexpected error: $e');
       emit(SignOutError('Something went wrong'));
     }
+  }
+
+  Future<void> loadUserData() async {
+    final cachedUser = getCachedUser();
+
+    if (cachedUser != null) {
+      log('Loading user from cache');
+
+      emit(GetUserDataSuccess(cachedUser));
+      return;
+    }
+
+    log('No cached user found, fetching from Supabase');
+
+    await getUserData();
   }
 
   Future<void> forgotPassword({
@@ -260,7 +288,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       // Add user data to database
       await addGoogleUserData();
-
+      await getUserData();
       emit(GoogleSignInSuccess());
     } on GoogleSignInException catch (e) {
       log('Google Sign In Error: ${e.code}');
@@ -391,5 +419,80 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     }
+  }
+
+  Future<void> getUserData() async {
+    try {
+      emit(GetUserDataLoading());
+
+      final user = clint.auth.currentUser;
+
+      if (user == null) {
+        emit(GetUserDataError('User is not authenticated'));
+        return;
+      }
+
+      final response = await clint
+          .from('users')
+          .select()
+          .eq('id', user.id)
+          .single();
+
+      log('User response: $response');
+
+      final userModel = UserModel.fromJson(response);
+
+      // Save user data in cache
+      await SharedPrefs.setString(
+        AppKeys.userId,
+        userModel.id,
+      );
+
+      await SharedPrefs.setString(
+        AppKeys.userName,
+        userModel.name,
+      );
+
+      await SharedPrefs.setString(
+        AppKeys.userEmail,
+        userModel.email,
+      );
+
+      log('User cached successfully');
+      log('Name: ${userModel.name}');
+      log('Email: ${userModel.email}');
+
+      emit(GetUserDataSuccess(userModel));
+    } on PostgrestException catch (e) {
+      log('Database Error: ${e.message}');
+      log('Code: ${e.code}');
+      log('Details: ${e.details}');
+
+      emit(GetUserDataError(e.message));
+    } catch (e) {
+      log('Unexpected Error: $e');
+
+      emit(
+        GetUserDataError(
+          'Something went wrong. Please try again.',
+        ),
+      );
+    }
+  }
+
+  UserModel? getCachedUser() {
+    final id = SharedPrefs.getString(AppKeys.userId);
+    final name = SharedPrefs.getString(AppKeys.userName);
+    final email = SharedPrefs.getString(AppKeys.userEmail);
+
+    if (id == null || name == null || email == null) {
+      return null;
+    }
+
+    return UserModel(
+      id: id,
+      name: name,
+      email: email,
+    );
   }
 }

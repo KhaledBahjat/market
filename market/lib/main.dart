@@ -18,7 +18,7 @@ Future<void> main() async {
   await SharedPrefs.init();
   final authCubit = AuthCubit();
   await authCubit.initializeGoogleSignIn();
-    Bloc.observer = AppBlocObserver();
+  Bloc.observer = AppBlocObserver();
   runApp(
     Market(
       authCubit: authCubit,
