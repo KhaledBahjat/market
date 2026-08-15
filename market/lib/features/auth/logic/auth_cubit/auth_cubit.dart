@@ -69,6 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String name,
   }) async {
     try {
       emit(SignUpLoading());
@@ -81,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
       final user = response.user;
       final session = response.session;
 
-      log('Sign Up response');
+      log('Sign Up $response');
       log('User ID: ${user?.id}');
       log('Session: $session');
 
@@ -109,7 +110,7 @@ class AuthCubit extends Cubit<AuthState> {
       // Account created and user is already authenticated
       log('Sign Up successful');
       log('User ID: ${user.id}');
-
+      await addUserData(name: name, email: email);
       emit(
         SignUpSucces(
           'Account created successfully.',
@@ -133,7 +134,6 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
-
 
   Future<void> signOut() async {
     try {
@@ -203,14 +203,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(GoogleSignInLoading());
 
-      // Start Google authentication
       final googleUser = await googleSignIn.authenticate();
 
       log('Google user: ${googleUser.email}');
 
-      // Get ID Token
       final googleAuth = googleUser.authentication;
-
       final idToken = googleAuth.idToken;
 
       if (idToken == null) {
@@ -222,15 +219,12 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // Get Access Token
       final authorization = await googleUser.authorizationClient
-          .authorizationForScopes(
-            [
-              'openid',
-              'email',
-              'profile',
-            ],
-          );
+          .authorizationForScopes([
+            'openid',
+            'email',
+            'profile',
+          ]);
 
       final accessToken = authorization?.accessToken;
 
@@ -243,7 +237,6 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // Sign in to Supabase
       final response = await clint.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,
@@ -265,6 +258,9 @@ class AuthCubit extends Cubit<AuthState> {
       log('User ID: ${user.id}');
       log('Email: ${user.email}');
 
+      // Add user data to database
+      await addGoogleUserData();
+
       emit(GoogleSignInSuccess());
     } on GoogleSignInException catch (e) {
       log('Google Sign In Error: ${e.code}');
@@ -279,15 +275,118 @@ class AuthCubit extends Cubit<AuthState> {
       log('Supabase Auth Error: ${e.message}');
 
       emit(
-        GoogleSignInError(
-          e.message,
-        ),
+        GoogleSignInError(e.message),
       );
     } catch (e) {
       log('Unexpected Google Sign In Error: $e');
 
       emit(
         GoogleSignInError(
+          'Something went wrong. Please try again.',
+        ),
+      );
+    }
+  }
+
+  Future<void> addUserData({
+    required String name,
+    required String email,
+  }) async {
+    try {
+      emit(AddUserDataLoading());
+
+      final user = clint.auth.currentUser;
+
+      if (user == null) {
+        emit(
+          AddUserDataError(
+            'User is not authenticated',
+          ),
+        );
+        return;
+      }
+
+      await clint.from('users').upsert({
+        'id': user.id,
+        'name': name.trim(),
+        'email': email.trim(),
+      });
+
+      log('User data added successfully');
+      log('User ID: ${user.id}');
+
+      emit(AddUserDataSuccess());
+    } on PostgrestException catch (e) {
+      log('Supabase Error: ${e.message}');
+      log('Code: ${e.code}');
+      log('Details: ${e.details}');
+
+      emit(AddUserDataError(e.message));
+    } catch (e) {
+      log('Unexpected Error: $e');
+
+      emit(
+        AddUserDataError(
+          'Something went wrong. Please try again.',
+        ),
+      );
+    }
+  }
+
+  Future<void> addGoogleUserData() async {
+    try {
+      emit(AddUserDataLoading());
+
+      final user = clint.auth.currentUser;
+
+      if (user == null) {
+        emit(
+          AddUserDataError(
+            'User is not authenticated.',
+          ),
+        );
+        return;
+      }
+
+      final metadata = user.userMetadata;
+
+      final name = metadata?['full_name'] ?? metadata?['name'] ?? 'User';
+
+      final email = user.email;
+
+      if (email == null) {
+        emit(
+          AddUserDataError(
+            'User email not found.',
+          ),
+        );
+        return;
+      }
+
+      await clint.from('users').upsert({
+        'id': user.id,
+        'name': name,
+        'email': email,
+      });
+
+      log('Google user data added successfully');
+      log('User ID: ${user.id}');
+      log('Name: $name');
+      log('Email: $email');
+
+      emit(AddUserDataSuccess());
+    } on PostgrestException catch (e) {
+      log('Database Error: ${e.message}');
+      log('Code: ${e.code}');
+
+      emit(
+        AddUserDataError(e.message),
+      );
+    } catch (e) {
+      log('Unexpected Error: $e');
+
+      emit(
+        AddUserDataError(
           'Something went wrong. Please try again.',
         ),
       );

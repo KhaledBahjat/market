@@ -137,6 +137,7 @@ class _SignUpState extends State<SignUp> {
                                   if (cubit.signUpFormKey.currentState!
                                       .validate()) {
                                     cubit.signUpWithEmailAndPassword(
+                                      name: cubit.signUpNameController.text,
                                       email: cubit.signUpEmailController.text
                                           .trim(),
                                       password:

@@ -67,3 +67,12 @@ class GoogleSignInError extends AuthState {
 
   GoogleSignInError(this.errorMessage);
 }
+final class AddUserDataLoading extends AuthState {}
+
+final class AddUserDataSuccess extends AuthState {}
+
+final class AddUserDataError extends AuthState {
+  final String message;
+
+  AddUserDataError(this.message);
+}

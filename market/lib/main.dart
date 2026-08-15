@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/cache/shared_prefs.dart';
 import 'package:market/core/constant.dart';
+import 'package:market/core/observer.dart';
 import 'package:market/core/routing/router_generator.dart';
 import 'package:market/core/theme/app_colors.dart';
 import 'package:market/features/auth/logic/auth_cubit/auth_cubit.dart';
@@ -17,6 +18,7 @@ Future<void> main() async {
   await SharedPrefs.init();
   final authCubit = AuthCubit();
   await authCubit.initializeGoogleSignIn();
+    Bloc.observer = AppBlocObserver();
   runApp(
     Market(
       authCubit: authCubit,

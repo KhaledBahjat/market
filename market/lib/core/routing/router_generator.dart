@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:market/core/routing/app_routs.dart';
+import 'package:market/core/routing/app_transitions.dart';
+
 import 'package:market/features/auth/nav_bar/ui/main_home.dart';
 import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
@@ -10,48 +14,95 @@ import 'package:market/features/proudct_details/ui/proudct_detils.dart';
 import 'package:market/splash_screen.dart';
 
 class RouterGenerator {
-  static GoRouter router = GoRouter(
+  static final GoRouter router = GoRouter(
     initialLocation: AppRouts.splashScreen,
     routes: [
       GoRoute(
         path: AppRouts.splashScreen,
         name: AppRouts.splashScreen,
-        builder: (context, state) => SplashScreen(),
+        pageBuilder: (context, state) {
+          return AppTransitions.fade(
+            key: state.pageKey,
+            child: SplashScreen(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.signInScreen,
         name: AppRouts.signInScreen,
-        builder: (context, state) => SignIn(),
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromLeft(
+            key: state.pageKey,
+            child: SignIn(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.signUpScreen,
         name: AppRouts.signUpScreen,
-        builder: (context, state) => SignUp(),
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromRight(
+            key: state.pageKey,
+            child: SignUp(),
+          );
+        },
       ),
+
       GoRoute(
-        name: AppRouts.forgetPasswordScreen,
         path: AppRouts.forgetPasswordScreen,
-        builder: (context, state) => ForgetPassword(),
+        name: AppRouts.forgetPasswordScreen,
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromBottom(
+            key: state.pageKey,
+            child: ForgetPassword(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.homeScreen,
         name: AppRouts.homeScreen,
-        builder: (context, state) => MainHome(),
+        pageBuilder: (context, state) {
+          return AppTransitions.fade(
+            key: state.pageKey,
+            child: MainHome(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.editProfileScreen,
         name: AppRouts.editProfileScreen,
-        builder: (context, state) => EditProfile(),
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromRight(
+            key: state.pageKey,
+            child: EditProfile(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.myOrderScreen,
         name: AppRouts.myOrderScreen,
-        builder: (context, state) => MyOrderScreen(),
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromRight(
+            key: state.pageKey,
+            child: MyOrderScreen(),
+          );
+        },
       ),
+
       GoRoute(
         path: AppRouts.proudctDetails,
         name: AppRouts.proudctDetails,
-        builder: (context, state) => ProudctDetils(),
+        pageBuilder: (context, state) {
+          return AppTransitions.slideFromRight(
+            key: state.pageKey,
+            child: ProudctDetils(),
+          );
+        },
       ),
     ],
   );

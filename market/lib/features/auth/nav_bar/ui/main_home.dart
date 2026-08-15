@@ -28,8 +28,8 @@ class MainHome extends StatelessWidget {
                 rippleColor: AppColors.kPrimaryColor,
                 hoverColor: AppColors.kPrimaryColor,
                 haptic: true,
-                curve: Curves.easeOutExpo,
-                duration: Duration(milliseconds: 400),
+                curve: Curves.easeIn,
+                duration: const Duration(milliseconds: 400),
                 gap: 8,
                 color: Colors.grey,
                 activeColor: AppColors.kPrimaryColor,
@@ -39,7 +39,11 @@ class MainHome extends StatelessWidget {
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 tabs: [
-                  GButton(icon: Icons.home, text: 'Home'),
+                  GButton(
+                    curve: Curves.easeInCubic,
+                    icon: Icons.home,
+                    text: 'Home',
+                  ),
                   GButton(icon: Icons.store, text: 'Store'),
                   GButton(icon: Icons.favorite, text: 'Favorite'),
                   GButton(icon: Icons.person, text: 'Profile'),

@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> {
               }
 
               if (state is SignInSucces) {
-                context.go(AppRouts.homeScreen);
+                context.pushReplacement(AppRouts.homeScreen);
               }
 
               if (state is GoogleSignInError) {
@@ -48,7 +48,7 @@ class _SignInState extends State<SignIn> {
               }
 
               if (state is GoogleSignInSuccess) {
-                context.go(AppRouts.homeScreen);
+                context.pushReplacementNamed(AppRouts.homeScreen);
               }
               if (state is SignInError) {
                 showDialog(
@@ -70,7 +70,7 @@ class _SignInState extends State<SignIn> {
                       message: 'Login Success',
                       onPressed: () {
                         Navigator.pop(context);
-                        context.go(AppRouts.homeScreen);
+                        context.pushReplacementNamed(AppRouts.homeScreen);
                       },
                     );
                   },
