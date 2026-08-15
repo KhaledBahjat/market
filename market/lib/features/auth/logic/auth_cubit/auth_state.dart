@@ -55,3 +55,15 @@ class ForgotPasswordError extends AuthState {
 
   ForgotPasswordError(this.errorMessage);
 }
+
+class GoogleSignInLoading extends AuthState {}
+
+class GoogleSignInSuccess extends AuthState {}
+
+class GoogleSignInCancelled extends AuthState {}
+
+class GoogleSignInError extends AuthState {
+  final String errorMessage;
+
+  GoogleSignInError(this.errorMessage);
+}

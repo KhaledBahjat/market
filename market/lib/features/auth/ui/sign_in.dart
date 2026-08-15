@@ -32,6 +32,25 @@ class _SignInState extends State<SignIn> {
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is SignInError) {
+                CustomErrorDialog(
+                  message: state.errorMessage,
+                );
+              }
+
+              if (state is SignInSucces) {
+                context.go(AppRouts.homeScreen);
+              }
+
+              if (state is GoogleSignInError) {
+                CustomErrorDialog(
+                  message: state.errorMessage,
+                );
+              }
+
+              if (state is GoogleSignInSuccess) {
+                context.go(AppRouts.homeScreen);
+              }
+              if (state is SignInError) {
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -148,7 +167,12 @@ class _SignInState extends State<SignIn> {
 
                               Height(height: 10),
 
-                              SignInWithGoogleButton(),
+                              SignInWithGoogleButton(
+                                isLoading: state is GoogleSignInLoading,
+                                onPressed: () {
+                                  context.read<AuthCubit>().signInWithGoogle();
+                                },
+                              ),
 
                               Height(height: 10),
 

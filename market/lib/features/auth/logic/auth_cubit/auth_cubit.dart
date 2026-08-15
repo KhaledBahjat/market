@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -132,6 +133,10 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
+  /**
+ * 123359603602-u43of4cohco8197pv81qloa9gar5fepe.apps.googleusercontent.com
+ * 
+ */
 
   Future<void> signOut() async {
     try {
@@ -180,6 +185,112 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(
         ForgotPasswordError(
+          'Something went wrong. Please try again.',
+        ),
+      );
+    }
+  }
+
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+
+  Future<void> initializeGoogleSignIn() async {
+    await googleSignIn.initialize(
+      serverClientId:
+          '123359603602-0nrbrr0jui3gppd0kah3i1q72q5pf7vv.apps.googleusercontent.com',
+    );
+
+    log('Google Sign In initialized');
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      emit(GoogleSignInLoading());
+
+      // Start Google authentication
+      final googleUser = await googleSignIn.authenticate();
+
+      log('Google user: ${googleUser.email}');
+
+      // Get ID Token
+      final googleAuth = googleUser.authentication;
+
+      final idToken = googleAuth.idToken;
+
+      if (idToken == null) {
+        emit(
+          GoogleSignInError(
+            'Google ID token not found.',
+          ),
+        );
+        return;
+      }
+
+      // Get Access Token
+      final authorization = await googleUser.authorizationClient
+          .authorizationForScopes(
+            [
+              'openid',
+              'email',
+              'profile',
+            ],
+          );
+
+      final accessToken = authorization?.accessToken;
+
+      if (accessToken == null) {
+        emit(
+          GoogleSignInError(
+            'Google access token not found.',
+          ),
+        );
+        return;
+      }
+
+      // Sign in to Supabase
+      final response = await clint.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+
+      final user = response.user;
+
+      if (user == null) {
+        emit(
+          GoogleSignInError(
+            'Failed to sign in with Google.',
+          ),
+        );
+        return;
+      }
+
+      log('Google Sign In successful');
+      log('User ID: ${user.id}');
+      log('Email: ${user.email}');
+
+      emit(GoogleSignInSuccess());
+    } on GoogleSignInException catch (e) {
+      log('Google Sign In Error: ${e.code}');
+      log('$e');
+
+      emit(
+        GoogleSignInError(
+          'Google Sign In failed.',
+        ),
+      );
+    } on AuthException catch (e) {
+      log('Supabase Auth Error: ${e.message}');
+
+      emit(
+        GoogleSignInError(
+          e.message,
+        ),
+      );
+    } catch (e) {
+      log('Unexpected Google Sign In Error: $e');
+
+      emit(
+        GoogleSignInError(
           'Something went wrong. Please try again.',
         ),
       );

@@ -9,25 +9,37 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(
     url: Secret.appUrl,
     publishableKey: Secret.anonKey,
   );
-  runApp(Market());
+
+  final authCubit = AuthCubit();
+
+  await authCubit.initializeGoogleSignIn();
+
+  runApp(
+    Market(
+      authCubit: authCubit,
+    ),
+  );
 }
 
 class Market extends StatelessWidget {
-  const Market({super.key});
+  final AuthCubit authCubit;
+
+  const Market({
+    super.key,
+    required this.authCubit,
+  });
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(375, 812),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AuthCubit(),
-          ),
-        ],
+      designSize: const Size(375, 812),
+      child: BlocProvider.value(
+        value: authCubit,
         child: MaterialApp.router(
           routerConfig: RouterGenerator.router,
           theme: ThemeData(

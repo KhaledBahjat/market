@@ -7,35 +7,52 @@ import 'package:market/core/theme/app_colors.dart';
 class SignInWithGoogleButton extends StatelessWidget {
   const SignInWithGoogleButton({
     super.key,
+    this.onPressed,
+    this.isLoading = false,
   });
+
+  final void Function()? onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.kWhiteColor,
         minimumSize: Size(double.infinity, 50.h),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
-          side: BorderSide(color: AppColors.kGreyColor)
+          side: BorderSide(
+            color: AppColors.kGreyColor,
+          ),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset('assets/icon/google.svg', height: 24.h, width: 24.w),
-          Width(width: 10),
-          Text(
-            'Sign In with Google',
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
+      child: isLoading
+          ? const SizedBox(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icon/google.svg',
+                  height: 24.h,
+                  width: 24.w,
+                ),
+                Width(width: 10),
+                Text(
+                  'Sign In with Google',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
