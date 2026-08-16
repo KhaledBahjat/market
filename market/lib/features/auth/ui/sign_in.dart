@@ -14,7 +14,7 @@ import 'package:market/features/auth/widgets/forget_password_widget.dart';
 import 'package:market/features/auth/widgets/sign_in_with_googlr_button.dart';
 
 class SignIn extends StatefulWidget {
-  SignIn({super.key});
+  const SignIn({super.key});
 
   @override
   State<SignIn> createState() => _SignInState();

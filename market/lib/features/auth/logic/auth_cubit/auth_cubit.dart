@@ -3,10 +3,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:market/core/cache/shared_prefs.dart';
+import 'package:market/core/networke/cache/shared_prefs.dart';
 import 'package:market/core/constant.dart';
 import 'package:market/features/auth/logic/models/user_model.dart';
-import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'auth_state.dart';
@@ -461,7 +460,6 @@ class AuthCubit extends Cubit<AuthState> {
       log('User cached successfully');
       log('Name: ${userModel.name}');
       log('Email: ${userModel.email}');
-
       emit(GetUserDataSuccess(userModel));
     } on PostgrestException catch (e) {
       log('Database Error: ${e.message}');

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:market/core/cache/shared_prefs.dart';
+import 'package:market/core/networke/cache/shared_prefs.dart';
 import 'package:market/core/constant.dart';
 import 'package:market/core/observer.dart';
 import 'package:market/core/routing/router_generator.dart';
