@@ -30,7 +30,8 @@ class ProudctCard extends StatelessWidget {
                     bottomRight: Radius.circular(16),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
+                    imageUrl:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
                     height: 200,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -43,8 +44,7 @@ class ProudctCard extends StatelessWidget {
                           color: AppColors.kPrimaryColor,
                         ),
                       ),
-      
-                  ),
+                    ),
                     errorWidget: (context, url, error) => Container(
                       height: 200,
                       width: double.infinity,
@@ -61,7 +61,7 @@ class ProudctCard extends StatelessWidget {
                 Positioned(
                   child: Container(
                     padding: EdgeInsets.all(10),
-      
+
                     decoration: BoxDecoration(
                       color: AppColors.kPrimaryColor.withValues(alpha: 0.7),
                       borderRadius: BorderRadius.only(
@@ -83,7 +83,7 @@ class ProudctCard extends StatelessWidget {
                 ),
               ],
             ),
-      
+
             Height(height: 5),
             Padding(
               padding: EdgeInsets.all(10),
@@ -140,7 +140,10 @@ class ProudctCard extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {},
-                        child: Text('Buy Now',style: TextStyle(color: AppColors.kWhiteColor)),
+                        child: Text(
+                          'Buy Now',
+                          style: TextStyle(color: AppColors.kWhiteColor),
+                        ),
                       ),
                     ],
                   ),

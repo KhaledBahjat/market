@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/helper/spacing.dart';
 
 class CommentCard extends StatelessWidget {
-  const CommentCard({super.key, 
+  const CommentCard({
+    super.key,
     required this.userName,
     required this.time,
     required this.comment,

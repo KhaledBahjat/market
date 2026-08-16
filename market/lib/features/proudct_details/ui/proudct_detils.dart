@@ -96,4 +96,3 @@ class ProudctDetils extends StatelessWidget {
     );
   }
 }
-

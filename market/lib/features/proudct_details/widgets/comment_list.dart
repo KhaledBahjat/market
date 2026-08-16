@@ -28,4 +28,3 @@ class CommentsList extends StatelessWidget {
     );
   }
 }
-

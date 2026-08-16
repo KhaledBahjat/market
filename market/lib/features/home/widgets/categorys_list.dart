@@ -15,7 +15,7 @@ class CategorysList extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
               CircleAvatar(
@@ -30,7 +30,7 @@ class CategorysList extends StatelessWidget {
               Height(height: 5),
               Text(
                 categories[index].name,
-                style:  TextStyle(fontSize: 15.sp),
+                style: TextStyle(fontSize: 15.sp),
               ),
             ],
           ),
@@ -50,7 +50,6 @@ List<CategoryItem> categories = [
   CategoryItem(name: 'Gaming Consoles', icon: Icons.videogame_asset),
   CategoryItem(name: 'Tablets', icon: Icons.tablet_mac),
   CategoryItem(name: 'Smartphones', icon: Icons.phone),
-  
 ];
 
 class CategoryItem {

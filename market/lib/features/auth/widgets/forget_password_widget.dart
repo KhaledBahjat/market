@@ -21,7 +21,8 @@ class ForgetPasswordWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: ()=>GoRouter.of(context).go(AppRouts.forgetPasswordScreen),
+          onPressed: () =>
+              GoRouter.of(context).go(AppRouts.forgetPasswordScreen),
         ),
       ],
     );

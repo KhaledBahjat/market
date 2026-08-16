@@ -7,7 +7,11 @@ final class HomeInitial extends HomeState {}
 
 final class GetDataLoading extends HomeState {}
 
-final class GetDataSuccess extends HomeState {}
+final class GetDataSuccess extends HomeState {
+  final List<ProudctModel> products;
+
+  GetDataSuccess(this.products);
+}
 
 final class GetDataError extends HomeState {
   final String errorMessage;

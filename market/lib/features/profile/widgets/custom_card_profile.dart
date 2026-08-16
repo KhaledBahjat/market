@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({
-    super.key, required this.icon, required this.title, required this.subtitle, this.onTap,
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
   });
   final IconData icon;
   final String title;

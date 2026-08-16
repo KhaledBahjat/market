@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:market/core/constant.dart';
+import 'package:market/core/error/dio_exception_handler.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
 
 class DioClient {
   late final Dio _dio;
@@ -32,10 +34,14 @@ class DioClient {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.get(
-      path,
-      queryParameters: queryParameters,
-    );
+    try {
+      return await _dio.get(
+        path,
+        queryParameters: queryParameters,
+      );
+    } on DioException catch (e) {
+      throw DioExceptionHandler.handle(e);
+    }
   }
 
   Future<Response> post(
@@ -43,11 +49,15 @@ class DioClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.post(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    try {
+      return await _dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    } on DioException catch (e) {
+      throw DioExceptionHandler.handle(e);
+    }
   }
 
   Future<Response> patch(
@@ -55,11 +65,15 @@ class DioClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.patch(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    try {
+      return await _dio.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    } on DioException catch (e) {
+      throw DioExceptionHandler.handle(e);
+    }
   }
 
   Future<Response> delete(
@@ -67,10 +81,14 @@ class DioClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.delete(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    try {
+      return await _dio.delete(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    } on DioException catch (e) {
+      throw DioExceptionHandler.handle(e);
+    }
   }
 }

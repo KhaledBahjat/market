@@ -18,7 +18,7 @@ class CustomSearchFeild extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.kPrimaryColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8)
+              borderRadius: BorderRadius.circular(8),
             ),
             iconSize: 30.sp,
             iconColor: AppColors.kWhiteColor,
@@ -33,7 +33,7 @@ class CustomSearchFeild extends StatelessWidget {
             width: 2.sp,
           ),
         ),
-    
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.r),
           borderSide: BorderSide(

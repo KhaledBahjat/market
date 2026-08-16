@@ -25,14 +25,14 @@ class Home extends StatelessWidget {
           CategorysList(),
           Height(height: 10),
 
-          Text('Recently Added', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Recently Added',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           Height(height: 10),
-          ProudctList()
+          ProudctList(),
         ],
       ),
     );
   }
 }
-
-
-

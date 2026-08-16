@@ -11,14 +11,14 @@ class Favorite extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: ListView(
         children: [
-            Center(
-              child: const Text(
+          Center(
+            child: const Text(
               'Your Favorite Products',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
             ),
+          ),
           Height(height: 20),
-          ProudctList()
+          ProudctList(),
         ],
       ),
     );
