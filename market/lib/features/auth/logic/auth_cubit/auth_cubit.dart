@@ -25,7 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuthState() async {
     final session = clint.auth.currentSession;
     log('Checking auth state...');
-    log('Session: $session');
+    // log('Session: $session');
 
     if (session != null) {
       log('User is authenticated');
@@ -89,7 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       log('Sign Up $response');
       log('User ID: ${user?.id}');
-      log('Session: $session');
+      // log('Session: $session');
 
       // Failed to create user
       if (user == null) {
@@ -437,7 +437,7 @@ class AuthCubit extends Cubit<AuthState> {
           .eq('id', user.id)
           .single();
 
-      log('User response: $response');
+      // log('User response: $response');
 
       final userModel = UserModel.fromJson(response);
 

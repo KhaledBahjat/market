@@ -1,12 +1,18 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:market/core/helper/spacing.dart';
 import 'package:market/core/widgets/cousttom_search_feild.dart';
 import 'package:market/core/widgets/proudct_list.dart';
 import 'package:market/features/home/widgets/categorys_list.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
-
+  Home({super.key});
+  final List<String> imgs = [
+    'assets/imgs/market.jpg',
+    'assets/imgs/market.jpg',
+    'assets/imgs/test.jpg',
+  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,7 +21,78 @@ class Home extends StatelessWidget {
         children: [
           CustomSearchFeild(),
           Height(height: 20),
-          Image.asset('assets/imgs/market.jpg', fit: BoxFit.cover),
+
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.r),
+              topRight: Radius.circular(16.r),
+            ),
+            child: CarouselSlider.builder(
+              itemCount: imgs.length,
+              itemBuilder:
+                  (
+                    context,
+                    index,
+                    realIndex,
+                  ) {
+                    return Image.asset(
+                      imgs[index],
+                      height: 200.h,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+
+                      // placeholder: (context, url) {
+                      //   return Container(
+                      //     height: 200.h,
+                      //     width: double.infinity,
+                      //     color: AppColors.kGreyColor.withValues(
+                      //       alpha: 0.5,
+                      //     ),
+                      //     child: Center(
+                      //       child: CircularProgressIndicator(
+                      //         color: AppColors.kPrimaryColor,
+                      //       ),
+                      //     ),
+                      //   );
+                      // },
+
+                      // errorWidget:
+                      //     (
+                      //       context,
+                      //       url,
+                      //       error,
+                      //     ) {
+                      //       return Container(
+                      //         height: 200.h,
+                      //         width: double.infinity,
+                      //         color: AppColors.kGreyColor.withValues(
+                      //           alpha: 0.5,
+                      //         ),
+                      //         child: Center(
+                      //           child: Icon(
+                      //             Icons.error,
+                      //             color: AppColors.kPrimaryColor,
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                    );
+                  },
+              options: CarouselOptions(
+                height: 200.h,
+                viewportFraction: 1,
+                enableInfiniteScroll: imgs.length > 1,
+                autoPlay: imgs.length > 1,
+                autoPlayInterval: const Duration(
+                  seconds: 3,
+                ),
+                autoPlayAnimationDuration: const Duration(
+                  milliseconds: 800,
+                ),
+                enlargeCenterPage: false,
+              ),
+            ),
+          ),
           Height(height: 20),
           const Text(
             'Popular Categories',

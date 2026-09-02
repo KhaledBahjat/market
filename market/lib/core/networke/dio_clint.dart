@@ -3,7 +3,6 @@ import 'package:market/core/constant.dart';
 import 'package:market/core/error/dio_exception_handler.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-
 class DioClient {
   late final Dio _dio;
 

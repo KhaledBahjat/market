@@ -18,3 +18,17 @@ final class GetDataError extends HomeState {
 
   GetDataError(this.errorMessage);
 }
+
+final class GetPopularLoading extends HomeState {}
+
+final class GetPopularSuccess extends HomeState {
+  final Populare pop;
+
+  GetPopularSuccess(this.pop);
+}
+
+final class GetPopularError extends HomeState {
+  final String errorMessage;
+
+  GetPopularError(this.errorMessage);
+}

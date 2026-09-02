@@ -10,7 +10,7 @@ class ProudctModel {
   String? oldPrice;
   String? proudcCategory;
   String? sale;
-  dynamic imageUrls;
+  String? imageUrls;
   List<Favorite>? favorite;
   List<Purchase>? purchase;
 
@@ -39,7 +39,7 @@ class ProudctModel {
     oldPrice: json['old_price'] as String?,
     proudcCategory: json['proudc_category'] as String?,
     sale: json['sale'] as String?,
-    imageUrls: json['image_urls'] as dynamic,
+    imageUrls: json['image_urls'],
     favorite: (json['favorite'] as List<dynamic>?)
         ?.map((e) => Favorite.fromJson(e as Map<String, dynamic>))
         .toList(),

@@ -3,21 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/proudct_model/proudct_model.dart';
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class ProudctCard extends StatelessWidget {
-  const ProudctCard({
-    super.key,
-  });
+  const ProudctCard({super.key, required this.proudct});
+
+  final ProudctModel proudct;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => GoRouter.of(context).pushNamed(AppRouts.proudctDetails),
+      onTap: () {
+        context.pushNamed(
+          AppRouts.proudctDetails,
+        );
+      },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16.r)),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Column(
           children: [
@@ -25,57 +30,73 @@ class ProudctCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
+                    topLeft: Radius.circular(16.r),
+                    topRight: Radius.circular(16.r),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYh3jq9ASNY0osM-0jk_V1RGFQGjfRpmo9fQ&s',
-                    height: 200,
+                    imageUrl: proudct.imageUrls ?? "assets/imgs/test.jpg",
+                    height: 200.h,
                     width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      height: 200,
-                      width: double.infinity,
-                      color: AppColors.kGreyColor.withValues(alpha: 0.5),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.kPrimaryColor,
+                    fit: BoxFit.fill,
+
+                    placeholder: (context, url) {
+                      return Container(
+                        height: 200.h,
+                        width: double.infinity,
+                        color: AppColors.kGreyColor.withValues(
+                          alpha: 0.5,
                         ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      height: 200,
-                      width: double.infinity,
-                      color: AppColors.kGreyColor.withValues(alpha: 0.5),
-                      child: Center(
-                        child: Icon(
-                          Icons.error,
-                          color: AppColors.kPrimaryColor,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.kPrimaryColor,
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
+
+                    errorWidget:
+                        (
+                          context,
+                          url,
+                          error,
+                        ) {
+                          return Container(
+                            height: 200.h,
+                            width: double.infinity,
+                            color: AppColors.kGreyColor.withValues(
+                              alpha: 0.5,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.error,
+                                color: AppColors.kPrimaryColor,
+                              ),
+                            ),
+                          );
+                        },
                   ),
                 ),
-                Positioned(
-                  child: Container(
-                    padding: EdgeInsets.all(10),
 
+                // Sale
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Container(
+                    padding: EdgeInsets.all(10.r),
                     decoration: BoxDecoration(
-                      color: AppColors.kPrimaryColor.withValues(alpha: 0.7),
+                      color: AppColors.kPrimaryColor.withValues(
+                        alpha: 0.7,
+                      ),
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16.r),
-                        bottomLeft: Radius.circular(16.r),
+                        topLeft: Radius.circular(16.r),
                         bottomRight: Radius.circular(16.r),
                       ),
                     ),
                     child: Text(
-                      '10% Off',
-                      textAlign: TextAlign.center,
+                      '${proudct.sale}% Off',
                       style: TextStyle(
                         color: AppColors.kWhiteColor,
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -85,20 +106,26 @@ class ProudctCard extends StatelessWidget {
             ),
 
             Height(height: 5),
+
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10.r),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Product Name',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          proudct.proudctName ?? "Unknown Name",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+
                       IconButton(
                         onPressed: () {},
                         icon: Icon(
@@ -108,6 +135,7 @@ class ProudctCard extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -115,23 +143,25 @@ class ProudctCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$100 LE',
+                            '\$${proudct.proudctPrice} LE',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                               color: AppColors.kPrimaryColor,
                             ),
                           ),
+
                           Text(
-                            '\$150 LE',
+                            '\$${proudct.oldPrice} LE',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               decoration: TextDecoration.lineThrough,
                               color: AppColors.kGreyColor,
                             ),
                           ),
                         ],
                       ),
+
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.kPrimaryColor,
@@ -142,7 +172,9 @@ class ProudctCard extends StatelessWidget {
                         onPressed: () {},
                         child: Text(
                           'Buy Now',
-                          style: TextStyle(color: AppColors.kWhiteColor),
+                          style: TextStyle(
+                            color: AppColors.kWhiteColor,
+                          ),
                         ),
                       ),
                     ],
