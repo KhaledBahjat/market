@@ -16,9 +16,7 @@ class ProudctCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(
-          AppRouts.proudctDetails,
-        );
+        context.pushNamed(AppRouts.proudctDetails, extra: proudct);
       },
       child: Card(
         shape: RoundedRectangleBorder(

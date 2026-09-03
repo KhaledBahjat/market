@@ -24,10 +24,22 @@ class GetRatesCubit extends Cubit<GetRatesState> {
       for (var rate in response.data) {
         rates.add(Rates.fromJson(rate));
       }
+      _getAvrageRate();
+      log('Rates Number: ${rates.length}');
+      log('Average Rate: $averageRate');
       emit(GetRatesSuccess());
     } catch (e) {
       emit(GetRatesError('An error occurred'));
       log('Error in getUserRateForSpecificProduct: $e');
     }
+  }
+
+  void _getAvrageRate() {
+    for (var rate in rates) {
+      if (rate.rate != null) {
+        averageRate += rate.rate!;
+      }
+    }
+    averageRate = rates.isEmpty ? 0 : (averageRate / rates.length).round();
   }
 }

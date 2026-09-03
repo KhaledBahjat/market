@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:market/core/proudct_model/proudct_model.dart';
 
 import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/routing/app_transitions.dart';
@@ -99,7 +100,9 @@ class RouterGenerator {
         pageBuilder: (context, state) {
           return AppTransitions.slideFromRight(
             key: state.pageKey,
-            child: ProudctDetils(),
+            child: ProudctDetils(
+              proudctModel: state.extra as ProudctModel,
+            ),
           );
         },
       ),
