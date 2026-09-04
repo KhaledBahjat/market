@@ -5,6 +5,7 @@ import 'package:market/core/networke/api_services.dart';
 import 'package:market/core/networke/dio_clint.dart';
 import 'package:market/features/proudct_details/logic/models/rates/rates.dart';
 import 'package:meta/meta.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'get_rates_state.dart';
 
@@ -13,6 +14,7 @@ class GetRatesCubit extends Cubit<GetRatesState> {
   final ApiServices _apiServices = ApiServices(DioClient());
   List<Rates> rates = [];
   int averageRate = 0;
+  int userRate = 5;
   Future<void> getUserRateForSpecificProduct({
     required String productId,
   }) async {
@@ -25,13 +27,27 @@ class GetRatesCubit extends Cubit<GetRatesState> {
         rates.add(Rates.fromJson(rate));
       }
       _getAvrageRate();
-      log('Rates Number: ${rates.length}');
-      log('Average Rate: $averageRate');
+      List<Rates> userRates = _getUserRate();
+      log('user rates length: ${userRates.length}');
+      log('rate for user: ${rates[0].forUser}');
+      log('Current User: ${Supabase.instance.client.auth.currentUser!.id}');
+      log('User Rate: $userRate');
       emit(GetRatesSuccess());
     } catch (e) {
       emit(GetRatesError('An error occurred'));
       log('Error in getUserRateForSpecificProduct: $e');
     }
+  }
+
+  List<Rates> _getUserRate() {
+    List<Rates> userRates = rates
+        .where(
+          (rate) =>
+              rate.forUser == Supabase.instance.client.auth.currentUser!.id,
+        )
+        .toList();
+    userRate = userRates[0].rate ?? 5;
+    return userRates;
   }
 
   void _getAvrageRate() {
