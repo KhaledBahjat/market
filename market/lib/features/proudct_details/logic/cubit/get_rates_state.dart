@@ -14,3 +14,13 @@ final class GetRatesError extends GetRatesState {
 }
 
 final class GetRatesSuccess extends GetRatesState {}
+
+final class AddOrUpdateRateSuccess extends GetRatesState {}
+
+final class AddOrUpdateRateError extends GetRatesState {
+  final String message;
+
+  AddOrUpdateRateError(this.message);
+}
+
+final class AddOrUpdateRateLoading extends GetRatesState {}

@@ -12,9 +12,10 @@ part 'get_rates_state.dart';
 class GetRatesCubit extends Cubit<GetRatesState> {
   GetRatesCubit() : super(GetRatesInitial());
   final ApiServices _apiServices = ApiServices(DioClient());
+  String usrId = Supabase.instance.client.auth.currentUser!.id;
   List<Rates> rates = [];
   int averageRate = 0;
-  int userRate = 5;
+  int userRate = 0;
   Future<void> getUserRateForSpecificProduct({
     required String productId,
   }) async {
@@ -23,15 +24,16 @@ class GetRatesCubit extends Cubit<GetRatesState> {
       final response = await _apiServices.get(
         '/rates?select=*&for_proudct=eq.$productId',
       );
+      // مهم جدًا
+      rates.clear();
       for (var rate in response.data) {
         rates.add(Rates.fromJson(rate));
       }
       _getAvrageRate();
-      List<Rates> userRates = _getUserRate();
+      final List<Rates> userRates = _getUserRate();
       log('user rates length: ${userRates.length}');
-      log('rate for user: ${rates[0].forUser}');
-      log('Current User: ${Supabase.instance.client.auth.currentUser!.id}');
       log('User Rate: $userRate');
+      log('Average Rate: $averageRate');
       emit(GetRatesSuccess());
     } catch (e) {
       emit(GetRatesError('An error occurred'));
@@ -39,23 +41,60 @@ class GetRatesCubit extends Cubit<GetRatesState> {
     }
   }
 
+  Future<void> addOrUpdateRateForSpecificProduct({
+    required String productId,
+    required Map<String, dynamic> data,
+  }) async {
+    try {
+      emit(AddOrUpdateRateLoading());
+      if (isUserRated(productId: productId)) {
+        await _apiServices.patch(
+          '/rates?for_user=eq.$usrId&for_proudct=eq.$productId',
+          data: data,
+        );
+      } else {
+        await _apiServices.post(
+          '/rates',
+          data: data,
+        );
+      }
+
+      // جيب الـ rates الجديدة واحسب الـ average من جديد
+      await getUserRateForSpecificProduct(
+        productId: productId,
+      );
+    } catch (e) {
+      emit(AddOrUpdateRateError(e.toString()));
+      log('Error in addOrUpdateRateForSpecificProduct: $e');
+    }
+  }
+
+  bool isUserRated({required String productId}) {
+    for (var rate in rates) {
+      if ((rate.forUser == usrId) && (rate.forProudct == productId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   List<Rates> _getUserRate() {
     List<Rates> userRates = rates
         .where(
-          (rate) =>
-              rate.forUser == Supabase.instance.client.auth.currentUser!.id,
+          (rate) => rate.forUser == usrId,
         )
         .toList();
-    userRate = userRates[0].rate ?? 5;
+    userRate = userRates.isNotEmpty ? userRates[0].rate ?? 0 : 0;
     return userRates;
   }
 
   void _getAvrageRate() {
+    averageRate = 0;
     for (var rate in rates) {
       if (rate.rate != null) {
         averageRate += rate.rate!;
       }
     }
-    averageRate = rates.isEmpty ? 0 : (averageRate / rates.length).round();
+    averageRate = rates.isEmpty ? 3 : (averageRate / rates.length).round();
   }
 }

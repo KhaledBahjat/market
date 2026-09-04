@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,22 +79,32 @@ class ProudctDetils extends StatelessWidget {
                           proudctModel.proudctDesc ?? 'Proudct Description',
                         ),
                         Height(height: 20),
-                        RatingBar.builder(
-                          initialRating: cubit.userRate.toDouble(),
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: false,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(
-                            horizontal: 4.0,
+                        Skeletonizer(
+                          enabled: state is AddOrUpdateRateLoading,
+                          child: RatingBar.builder(
+                            initialRating: cubit.userRate.toDouble(),
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(
+                              horizontal: 4.0,
+                            ),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              cubit.addOrUpdateRateForSpecificProduct(
+                                productId: proudctModel.id!,
+                                data: {
+                                  'for_user': cubit.usrId,
+                                  'for_proudct': proudctModel.id!,
+                                  'rate': rating.toInt(),
+                                },
+                              );
+                            },
                           ),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            log(rating.toString());
-                          },
                         ),
                         Height(height: 16),
                         CustomTextFormFeild(
