@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:market/core/error/failure.dart';
 import 'package:market/core/networke/api_services.dart';
 import 'package:market/core/networke/dio_clint.dart';
 import 'package:market/features/proudct_details/logic/models/rates/rates.dart';
@@ -35,6 +36,9 @@ class GetRatesCubit extends Cubit<GetRatesState> {
       log('User Rate: $userRate');
       log('Average Rate: $averageRate');
       emit(GetRatesSuccess());
+    } on Failure catch (e) {
+      emit(GetRatesError(e.message));
+      log('Failure in getUserRateForSpecificProduct: ${e.message}');
     } catch (e) {
       emit(GetRatesError('An error occurred'));
       log('Error in getUserRateForSpecificProduct: $e');
@@ -63,6 +67,9 @@ class GetRatesCubit extends Cubit<GetRatesState> {
       await getUserRateForSpecificProduct(
         productId: productId,
       );
+    } on Failure catch (e) {
+      emit(AddOrUpdateRateError(e.message));
+      log('Failure in addOrUpdateRateForSpecificProduct: ${e.message}');
     } catch (e) {
       emit(AddOrUpdateRateError(e.toString()));
       log('Error in addOrUpdateRateForSpecificProduct: $e');

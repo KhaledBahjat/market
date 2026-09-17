@@ -19,6 +19,7 @@ class CustomTextFormFeild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       controller: controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
