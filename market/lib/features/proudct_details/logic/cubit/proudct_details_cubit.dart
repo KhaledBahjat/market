@@ -4,17 +4,19 @@ import 'package:bloc/bloc.dart';
 import 'package:market/core/error/failure.dart';
 import 'package:market/core/networke/api_services.dart';
 import 'package:market/core/networke/dio_clint.dart';
+import 'package:market/features/proudct_details/logic/models/comment/comment.dart';
 import 'package:market/features/proudct_details/logic/models/rates/rates.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'proudct_details_state.dart';
 
-class GetRatesCubit extends Cubit<ProudctDetailsState> {
-  GetRatesCubit() : super(GetRatesInitial());
+class ProudctDetailsCubit extends Cubit<ProudctDetailsState> {
+  ProudctDetailsCubit() : super(GetRatesInitial());
   final ApiServices _apiServices = ApiServices(DioClient());
   String usrId = Supabase.instance.client.auth.currentUser!.id;
   List<Rates> rates = [];
+  List<Comment> comments = [];
   int averageRate = 0;
   int userRate = 0;
   Future<void> getUserRateForSpecificProduct({
@@ -106,17 +108,50 @@ class GetRatesCubit extends Cubit<ProudctDetailsState> {
   }
 
   // add user comment
-  Future<void> addUserComment({required Map<String, dynamic> data}) async {
+  Future<void> addUserComment({
+    required Map<String, dynamic> data,
+    required String proudctId,
+  }) async {
     try {
       emit(AddCommentLoading());
       await _apiServices.post('/comments', data: data);
       emit(AddCommentSuccess());
+      await getCommentsForSpecificProduct(productId: proudctId);
     } on Failure catch (e) {
       emit(AddCommentError(e.message));
       log('Failure in addUserComment: ${e.message}');
     } catch (e) {
       emit(AddCommentError(e.toString()));
       log('Error in addUserComment: $e');
+    }
+  }
+
+  Future<void> getCommentsForSpecificProduct({
+    required String productId,
+  }) async {
+    try {
+      emit(GetCommentLoading());
+      final response = await _apiServices.get(
+        '/comments?select=*&for_proudct=eq.$productId&order=created_at.desc',
+      );
+      comments.clear();
+      for (var comment in response.data) {
+        comments.add(Comment.fromJson(comment));
+      }
+
+      log('Comments length: ${comments.length}');
+
+      emit(GetCommentSuccess());
+    } on Failure catch (e) {
+      emit(GetCommentError(e.message));
+      log(
+        'Failure in getCommentsForSpecificProduct: ${e.message}',
+      );
+    } catch (e) {
+      emit(GetCommentError(e.toString()));
+      log(
+        'Error in getCommentsForSpecificProduct: $e',
+      );
     }
   }
 }

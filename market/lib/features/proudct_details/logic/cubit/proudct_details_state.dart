@@ -26,9 +26,21 @@ final class AddOrUpdateRateError extends ProudctDetailsState {
 final class AddOrUpdateRateLoading extends ProudctDetailsState {}
 
 final class AddCommentSuccess extends ProudctDetailsState {}
+
 final class AddCommentError extends ProudctDetailsState {
   final String message;
 
   AddCommentError(this.message);
 }
+
 final class AddCommentLoading extends ProudctDetailsState {}
+
+final class GetCommentSuccess extends ProudctDetailsState {}
+
+final class GetCommentError extends ProudctDetailsState {
+  final String message;
+
+  GetCommentError(this.message);
+}
+
+final class GetCommentLoading extends ProudctDetailsState {}

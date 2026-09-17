@@ -28,19 +28,19 @@ class _ProudctDetilsState extends State<ProudctDetils> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          GetRatesCubit()
-            ..getUserRateForSpecificProduct(productId: widget.proudctModel.id!),
-      child: BlocBuilder<GetRatesCubit, ProudctDetailsState>(
+      create: (context) => ProudctDetailsCubit()
+        ..getUserRateForSpecificProduct(productId: widget.proudctModel.id!)
+        ..getCommentsForSpecificProduct(productId: widget.proudctModel.id!),
+      child: BlocBuilder<ProudctDetailsCubit, ProudctDetailsState>(
         builder: (context, state) {
-          GetRatesCubit cubit = context.read<GetRatesCubit>();
+          ProudctDetailsCubit cubit = context.read<ProudctDetailsCubit>();
           return Scaffold(
             appBar: AppBar(
               title: Text(widget.proudctModel.proudctName ?? 'Proudct Name'),
               centerTitle: true,
             ),
             body: Skeletonizer(
-              enabled: state is GetRatesLoading,
+              enabled: state is GetRatesLoading || state is GetCommentLoading,
               child: ListView(
                 children: [
                   CachedNetworkImage(
@@ -152,6 +152,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                                       }
 
                                       await cubit.addUserComment(
+                                        proudctId: widget.proudctModel.id!,
                                         data: {
                                           'user_name':
                                               SharedPrefs.getString(
@@ -180,7 +181,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                           ),
                         ),
                         Height(height: 12),
-                        CommentsList(),
+                        CommentsList(comments: cubit.comments),
                       ],
                     ),
                   ),
