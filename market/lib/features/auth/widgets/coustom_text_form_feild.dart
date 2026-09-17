@@ -10,15 +10,18 @@ class CustomTextFormFeild extends StatelessWidget {
     this.hint,
     this.obscureText,
     this.controller,
+    this.autovalidateMode,
   });
   final String labelText;
   final Widget? suffixIcon;
   final String? hint;
   final bool? obscureText;
   final TextEditingController? controller;
+  final AutovalidateMode? autovalidateMode;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: autovalidateMode,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       controller: controller,
       validator: (value) {

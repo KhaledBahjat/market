@@ -8,9 +8,9 @@ import 'package:market/features/proudct_details/logic/models/rates/rates.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'get_rates_state.dart';
+part 'proudct_details_state.dart';
 
-class GetRatesCubit extends Cubit<GetRatesState> {
+class GetRatesCubit extends Cubit<ProudctDetailsState> {
   GetRatesCubit() : super(GetRatesInitial());
   final ApiServices _apiServices = ApiServices(DioClient());
   String usrId = Supabase.instance.client.auth.currentUser!.id;
@@ -103,5 +103,20 @@ class GetRatesCubit extends Cubit<GetRatesState> {
       }
     }
     averageRate = rates.isEmpty ? 3 : (averageRate / rates.length).round();
+  }
+
+  // add user comment
+  Future<void> addUserComment({required Map<String, dynamic> data}) async {
+    try {
+      emit(AddCommentLoading());
+      await _apiServices.post('/comments', data: data);
+      emit(AddCommentSuccess());
+    } on Failure catch (e) {
+      emit(AddCommentError(e.message));
+      log('Failure in addUserComment: ${e.message}');
+    } catch (e) {
+      emit(AddCommentError(e.toString()));
+      log('Error in addUserComment: $e');
+    }
   }
 }
