@@ -220,7 +220,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> initializeGoogleSignIn() async {
     await googleSignIn.initialize(
       serverClientId:
-          '123359603602-0nrbrr0jui3gppd0kah3i1q72q5pf7vv.apps.googleusercontent.com',
+          '123359603602-av7us3dinieatjrmaq6mla3ung0cfhrp.apps.googleusercontent.com',
     );
 
     log('Google Sign In initialized');

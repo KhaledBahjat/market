@@ -9,7 +9,7 @@ class DioClient {
   DioClient() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: EndPoints.baseUrl,
+        baseUrl: 'https://aqqrybhyrojcmevysyqf.supabase.co/rest/v1',
         headers: {
           'apikey': Secret.anonKey,
           'Authorization': 'Bearer ${Secret.anonKey}',

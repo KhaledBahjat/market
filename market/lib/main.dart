@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: Secret.appUrl,
+    url: Secret.url,
     publishableKey: Secret.anonKey,
   );
   await SharedPrefs.init();

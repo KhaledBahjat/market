@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:market/core/constant.dart';
 import 'package:market/core/error/failure.dart';
 import 'package:market/core/networke/api_services.dart';
 import 'package:market/core/networke/dio_clint.dart';
@@ -18,7 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       emit(GetDataLoading());
       final response = await api.get(
-        EndPoints.getProudcts,
+        '/proudcts',
       );
 
       final products = (response.data as List)
