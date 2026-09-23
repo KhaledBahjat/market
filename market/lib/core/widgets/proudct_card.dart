@@ -8,7 +8,10 @@ import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class ProudctCard extends StatelessWidget {
-  const ProudctCard({super.key, required this.proudct});
+  const ProudctCard({
+    super.key,
+    required this.proudct,
+  });
 
   final ProudctModel proudct;
 
@@ -16,7 +19,10 @@ class ProudctCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed(AppRouts.proudctDetails, extra: proudct);
+        context.pushNamed(
+          AppRouts.proudctDetails,
+          extra: proudct,
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -31,47 +37,48 @@ class ProudctCard extends StatelessWidget {
                     topLeft: Radius.circular(16.r),
                     topRight: Radius.circular(16.r),
                   ),
-                  child: CachedNetworkImage(
-                    imageUrl: proudct.imageUrls ?? "assets/imgs/test.jpg",
-                    height: 200.h,
-                    width: double.infinity,
-                    fit: BoxFit.fill,
-
-                    placeholder: (context, url) {
-                      return Container(
-                        height: 200.h,
-                        width: double.infinity,
-                        color: AppColors.kGreyColor.withValues(
-                          alpha: 0.5,
-                        ),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.kPrimaryColor,
+                  child: Hero(
+                    tag: 'product-image-${proudct.id}',
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          proudct.imageUrls ?? 'assets/imgs/test.jpg',
+                      height: 200.h,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) {
+                        return Container(
+                          height: 200.h,
+                          width: double.infinity,
+                          color: AppColors.kGreyColor.withValues(
+                            alpha: 0.5,
                           ),
-                        ),
-                      );
-                    },
-
-                    errorWidget:
-                        (
-                          context,
-                          url,
-                          error,
-                        ) {
-                          return Container(
-                            height: 200.h,
-                            width: double.infinity,
-                            color: AppColors.kGreyColor.withValues(
-                              alpha: 0.5,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.kPrimaryColor,
                             ),
-                            child: Center(
-                              child: Icon(
-                                Icons.error,
-                                color: AppColors.kPrimaryColor,
-                              ),
+                          ),
+                        );
+                      },
+                      errorWidget: (
+                        context,
+                        url,
+                        error,
+                      ) {
+                        return Container(
+                          height: 200.h,
+                          width: double.infinity,
+                          color: AppColors.kGreyColor.withValues(
+                            alpha: 0.5,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.error,
+                              color: AppColors.kPrimaryColor,
                             ),
-                          );
-                        },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
 
@@ -110,11 +117,12 @@ class ProudctCard extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
-                          proudct.proudctName ?? "Unknown Name",
+                          proudct.proudctName ?? 'Unknown Name',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -135,10 +143,12 @@ class ProudctCard extends StatelessWidget {
                   ),
 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
                         children: [
                           Text(
                             '\$${proudct.proudctPrice} LE',
@@ -153,7 +163,8 @@ class ProudctCard extends StatelessWidget {
                             '\$${proudct.oldPrice} LE',
                             style: TextStyle(
                               fontSize: 14.sp,
-                              decoration: TextDecoration.lineThrough,
+                              decoration:
+                                  TextDecoration.lineThrough,
                               color: AppColors.kGreyColor,
                             ),
                           ),
@@ -162,9 +173,11 @@ class ProudctCard extends StatelessWidget {
 
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.kPrimaryColor,
+                          backgroundColor:
+                              AppColors.kPrimaryColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
+                            borderRadius:
+                                BorderRadius.circular(8.r),
                           ),
                         ),
                         onPressed: () {},
