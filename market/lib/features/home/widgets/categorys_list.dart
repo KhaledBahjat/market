@@ -52,14 +52,34 @@ class CategorysList extends StatelessWidget {
 }
 
 List<CategoryItem> categories = [
-  CategoryItem(name: 'Phones', icon: Icons.phone_android),
-  CategoryItem(name: 'Laptops', icon: Icons.laptop),
-  CategoryItem(name: 'Headphones', icon: Icons.headphones),
-  CategoryItem(name: 'Cameras', icon: Icons.camera_alt),
-  CategoryItem(name: 'Smartwatches', icon: Icons.watch),
-  CategoryItem(name: 'Gaming Consoles', icon: Icons.videogame_asset),
-  CategoryItem(name: 'Tablets', icon: Icons.tablet_mac),
-  CategoryItem(name: 'Smartphones', icon: Icons.phone),
+  CategoryItem(
+    name: 'Smartphones',
+    icon: Icons.phone_android,
+  ),
+  CategoryItem(
+    name: 'Laptops',
+    icon: Icons.laptop,
+  ),
+  CategoryItem(
+    name: 'Headphones',
+    icon: Icons.headphones,
+  ),
+  CategoryItem(
+    name: 'Cameras',
+    icon: Icons.camera_alt,
+  ),
+  CategoryItem(
+    name: 'Smartwatches',
+    icon: Icons.watch,
+  ),
+  CategoryItem(
+    name: 'Gaming Consoles',
+    icon: Icons.videogame_asset,
+  ),
+  CategoryItem(
+    name: 'Tablets',
+    icon: Icons.tablet_mac,
+  ),
 ];
 
 class CategoryItem {

@@ -74,7 +74,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(.06),
+                        color: Colors.black.withValues(alpha: .06),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -109,7 +109,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(.06),
+                          color: Colors.black.withValues(alpha: .06),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -238,7 +238,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppColors.kPrimaryColor
-                                      .withOpacity(.10),
+                                      .withValues(alpha: .10),
                                   borderRadius:
                                       BorderRadius.circular(20.r),
                                 ),
@@ -299,7 +299,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
             borderRadius: BorderRadius.circular(28.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(.07),
+                color: Colors.black.withValues(alpha: .07),
                 blurRadius: 25,
                 offset: const Offset(0, 10),
               ),
@@ -355,7 +355,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
         borderRadius: BorderRadius.circular(14.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.05),
+            color: Colors.black.withValues(alpha: .05),
             blurRadius: 10,
           ),
         ],
@@ -406,7 +406,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.04),
+            color: Colors.black.withValues(alpha: .04),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -456,7 +456,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.04),
+            color: Colors.black.withValues(alpha: .04),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -539,7 +539,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.04),
+            color: Colors.black.withValues(alpha: .04),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -639,7 +639,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
             width: 65.w,
             height: 65.w,
             decoration: BoxDecoration(
-              color: AppColors.kPrimaryColor.withOpacity(.08),
+              color: AppColors.kPrimaryColor.withValues(alpha: .08),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -691,7 +691,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.10),
+              color: Colors.black.withValues(alpha: .10),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -703,7 +703,7 @@ class _ProudctDetilsState extends State<ProudctDetils> {
               width: 52.w,
               height: 52.w,
               decoration: BoxDecoration(
-                color: AppColors.kPrimaryColor.withOpacity(.10),
+                color: AppColors.kPrimaryColor.withValues(alpha: .10),
                 borderRadius: BorderRadius.circular(15.r),
               ),
               child: IconButton(
