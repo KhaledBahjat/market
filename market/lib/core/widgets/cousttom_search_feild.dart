@@ -10,6 +10,7 @@ class CustomSearchFeild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
         label: Text('Search in Market'),
         suffixIcon: ElevatedButton.icon(

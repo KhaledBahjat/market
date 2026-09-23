@@ -1,12 +1,11 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market/core/routing/app_routs.dart';
-import 'dart:math' as math;
-
 import 'package:market/features/auth/logic/auth_cubit/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,77 +22,157 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _slideController;
   late AnimationController _rotateController;
   late AnimationController _pulseController;
+
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _rotateAnimation;
   late Animation<double> _pulseAnimation;
 
+  bool _hasNavigated = false;
+
   @override
   void initState() {
     super.initState();
+
+    _initializeAnimations();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<AuthCubit>().checkAuthState();
       }
     });
-    _initializeAnimations();
   }
 
+  // =========================
+  // Auth Navigation
+  // =========================
+
+  Future<void> _handleAuthState(AuthState state) async {
+    if (_hasNavigated || !mounted) return;
+
+    String? route;
+
+    if (state is AuthAuthenticated) {
+      route = AppRouts.homeScreen;
+    } else if (state is AuthUnauthenticated) {
+      route = AppRouts.signInScreen;
+    }
+
+    if (route == null) return;
+
+    _hasNavigated = true;
+
+    // نخلي الـ Splash يظهر بشكل محترم
+    await Future.delayed(
+      const Duration(milliseconds: 700),
+    );
+
+    if (!mounted) return;
+
+    context.go(route);
+  }
+
+  // =========================
+  // Animations
+  // =========================
+
   void _initializeAnimations() {
-    // Fade animation for the logo
+    // Fade
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeOut,
     );
 
-    // Scale animation for the logo
+    // Scale
     _scaleController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut),
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.65,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _scaleController,
+        curve: Curves.easeOutBack,
+      ),
     );
 
-    // Slide animation for the app name
+    // Slide
     _slideController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 900),
       vsync: this,
     );
-    _slideAnimation =
-        Tween<Offset>(
-          begin: const Offset(0, 0.5),
-          end: Offset.zero,
-        ).animate(
-          CurvedAnimation(parent: _slideController, curve: Curves.easeOut),
-        );
 
-    // Rotation animation for decorative elements
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.25),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _slideController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+
+    // Rotation
     _rotateController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 8),
       vsync: this,
     )..repeat();
-    _rotateAnimation = Tween<double>(begin: 0.0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: _rotateController, curve: Curves.linear),
+
+    _rotateAnimation = Tween<double>(
+      begin: 0,
+      end: 2 * math.pi,
+    ).animate(
+      CurvedAnimation(
+        parent: _rotateController,
+        curve: Curves.linear,
+      ),
     );
 
-    // Pulse animation
+    // Pulse
     _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     )..repeat(reverse: true);
-    _pulseAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+
+    _pulseAnimation = Tween<double>(
+      begin: 0.94,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _pulseController,
+        curve: Curves.easeInOut,
+      ),
     );
 
-    // Start animations sequentially
-    _fadeController.forward().then((_) {
-      _scaleController.forward();
-    });
+    _startAnimations();
+  }
+
+  Future<void> _startAnimations() async {
+    _fadeController.forward();
+
+    await Future.delayed(
+      const Duration(milliseconds: 150),
+    );
+
+    if (!mounted) return;
+
+    _scaleController.forward();
+
+    await Future.delayed(
+      const Duration(milliseconds: 150),
+    );
+
+    if (!mounted) return;
+
     _slideController.forward();
   }
 
@@ -104,8 +183,13 @@ class _SplashScreenState extends State<SplashScreen>
     _slideController.dispose();
     _rotateController.dispose();
     _pulseController.dispose();
+
     super.dispose();
   }
+
+  // =========================
+  // Build
+  // =========================
 
   @override
   Widget build(BuildContext context) {
@@ -113,18 +197,13 @@ class _SplashScreenState extends State<SplashScreen>
       listener: (context, state) {
         log('Splash received state: $state');
 
-        if (state is AuthAuthenticated) {
-          context.go(AppRouts.homeScreen);
-        }
-        if (state is AuthUnauthenticated) {
-          context.go(AppRouts.signInScreen);
-        }
+        _handleAuthState(state);
       },
       child: Scaffold(
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -137,7 +216,10 @@ class _SplashScreenState extends State<SplashScreen>
           ),
           child: Stack(
             children: [
-              // Animated decorative circles - dark theme
+              // =========================
+              // Top Decorative Circle
+              // =========================
+
               Positioned(
                 top: -80,
                 right: -60,
@@ -153,13 +235,16 @@ class _SplashScreenState extends State<SplashScreen>
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFF00D4FF).withValues(alpha: 0.08),
-                              Color(0xFF0099CC).withValues(alpha: 0.03),
+                              const Color(0xFF00D4FF)
+                                  .withValues(alpha: 0.08),
+                              const Color(0xFF0099CC)
+                                  .withValues(alpha: 0.03),
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0xFF00D4FF).withValues(alpha: 0.1),
+                              color: const Color(0xFF00D4FF)
+                                  .withValues(alpha: 0.1),
                               blurRadius: 50,
                             ),
                           ],
@@ -169,6 +254,11 @@ class _SplashScreenState extends State<SplashScreen>
                   },
                 ),
               ),
+
+              // =========================
+              // Bottom Decorative Circle
+              // =========================
+
               Positioned(
                 bottom: -100,
                 left: -80,
@@ -184,13 +274,16 @@ class _SplashScreenState extends State<SplashScreen>
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFFFF006E).withValues(alpha: 0.06),
-                              Color(0xFFFB5607).withValues(alpha: 0.02),
+                              const Color(0xFFFF006E)
+                                  .withValues(alpha: 0.06),
+                              const Color(0xFFFB5607)
+                                  .withValues(alpha: 0.02),
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0xFFFF006E).withValues(alpha: 0.08),
+                              color: const Color(0xFFFF006E)
+                                  .withValues(alpha: 0.08),
                               blurRadius: 50,
                             ),
                           ],
@@ -200,13 +293,20 @@ class _SplashScreenState extends State<SplashScreen>
                   },
                 ),
               ),
-              // Main content
+
+              // =========================
+              // Main Content
+              // =========================
+
               Center(
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Logo with animations
+                      // =========================
+                      // Logo
+                      // =========================
+
                       FadeTransition(
                         opacity: _fadeAnimation,
                         child: ScaleTransition(
@@ -218,7 +318,7 @@ class _SplashScreenState extends State<SplashScreen>
                               height: 160.w,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [
@@ -228,17 +328,15 @@ class _SplashScreenState extends State<SplashScreen>
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Color(
-                                      0xFF00D4FF,
-                                    ).withValues(alpha: 0.6),
+                                    color: const Color(0xFF00D4FF)
+                                        .withValues(alpha: 0.6),
                                     blurRadius: 50,
                                     spreadRadius: 8,
                                     offset: const Offset(0, 20),
                                   ),
                                   BoxShadow(
-                                    color: Color(
-                                      0xFF0099CC,
-                                    ).withValues(alpha: 0.4),
+                                    color: const Color(0xFF0099CC)
+                                        .withValues(alpha: 0.4),
                                     blurRadius: 25,
                                     spreadRadius: 3,
                                   ),
@@ -248,7 +346,11 @@ class _SplashScreenState extends State<SplashScreen>
                                 child: Image.asset(
                                   'assets/imgs/market.jpg',
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
+                                  errorBuilder: (
+                                    context,
+                                    error,
+                                    stackTrace,
+                                  ) {
                                     return Center(
                                       child: Icon(
                                         Icons.shopping_bag_rounded,
@@ -263,8 +365,13 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                       ),
+
                       SizedBox(height: 50.h),
-                      // App name with slide animation
+
+                      // =========================
+                      // App Name
+                      // =========================
+
                       SlideTransition(
                         position: _slideAnimation,
                         child: FadeTransition(
@@ -280,44 +387,53 @@ class _SplashScreenState extends State<SplashScreen>
                                   letterSpacing: 2.0,
                                   shadows: [
                                     Shadow(
-                                      color: Color(
-                                        0xFF00D4FF,
-                                      ).withValues(alpha: 0.6),
+                                      color: const Color(0xFF00D4FF)
+                                          .withValues(alpha: 0.6),
                                       blurRadius: 15,
                                       offset: const Offset(0, 5),
                                     ),
                                   ],
                                 ),
                               ),
+
                               SizedBox(height: 14.h),
+
                               Container(
                                 height: 4.h,
                                 width: 70.w,
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
+                                  gradient: const LinearGradient(
                                     colors: [
                                       Color(0xFF00D4FF),
                                       Color(0xFFFF006E),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius:
+                                      BorderRadius.circular(10),
                                 ),
                               ),
+
                               SizedBox(height: 18.h),
+
                               Text(
                                 'Premium Shopping',
                                 style: TextStyle(
                                   fontSize: 16.sp,
-                                  color: Colors.white.withValues(alpha: 0.8),
+                                  color: Colors.white.withValues(
+                                    alpha: 0.8,
+                                  ),
                                   letterSpacing: 1.0,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+
                               Text(
                                 'Experience',
                                 style: TextStyle(
                                   fontSize: 16.sp,
-                                  color: Colors.white.withValues(alpha: 0.6),
+                                  color: Colors.white.withValues(
+                                    alpha: 0.6,
+                                  ),
                                   letterSpacing: 1.0,
                                   fontWeight: FontWeight.w300,
                                 ),
@@ -326,8 +442,13 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ),
                       ),
+
                       SizedBox(height: 80.h),
-                      // Modern loading indicator
+
+                      // =========================
+                      // Loader
+                      // =========================
+
                       _buildModernLoader(),
                     ],
                   ),
@@ -340,6 +461,10 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
+  // =========================
+  // Modern Loader
+  // =========================
+
   Widget _buildModernLoader() {
     return Column(
       children: [
@@ -348,41 +473,53 @@ class _SplashScreenState extends State<SplashScreen>
           height: 50.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(3, (index) {
-              return AnimatedBuilder(
-                animation: _pulseController,
-                builder: (context, child) {
-                  final delay = index * 0.15;
-                  final progress = (_pulseController.value - delay) % 1.0;
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5.w),
-                    width: 10.w,
-                    height: 10.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFF00D4FF),
-                          Color(0xFFFF006E),
+            children: List.generate(
+              3,
+              (index) {
+                return AnimatedBuilder(
+                  animation: _pulseController,
+                  builder: (context, child) {
+                    final delay = index * 0.15;
+
+                    final progress =
+                        (_pulseController.value - delay) % 1.0;
+
+                    return Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 5.w,
+                      ),
+                      width: 10.w,
+                      height: 10.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF00D4FF),
+                            Color(0xFFFF006E),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF00D4FF)
+                                .withValues(alpha: 0.7),
+                            blurRadius: 12,
+                          ),
                         ],
                       ),
-                      color: Color(0xFF00D4FF).withValues(
-                        alpha: (progress < 0 ? 0.0 : progress).clamp(0.0, 1.0),
+                      child: Opacity(
+                        opacity: progress.clamp(0.0, 1.0),
+                        child: const SizedBox.expand(),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0xFF00D4FF).withValues(alpha: 0.7),
-                          blurRadius: 12,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
+
         SizedBox(height: 22.h),
+
         Text(
           'Preparing your experience...',
           style: TextStyle(

@@ -19,6 +19,7 @@ class Home extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: ListView(
         children: [
+          Height(height: 15),
           CustomSearchFeild(),
           Height(height: 20),
 

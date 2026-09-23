@@ -13,22 +13,21 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   final ApiServices api = ApiServices(DioClient());
-  Future<void> getProducts() async {
+  final List<ProudctModel> allProudcts = [];
+  final List<ProudctModel> filterdProudcts = [];
+  Future<void> getProducts({String?query}) async {
     try {
       emit(GetDataLoading());
       final response = await api.get(
         '/proudcts',
       );
 
-      final products = (response.data as List)
-          .map(
-            (product) => ProudctModel.fromJson(
-              product as Map<String, dynamic>,
-            ),
-          )
-          .toList();
+      for (var proudct in response.data) {
+        allProudcts.add(ProudctModel.fromJson(proudct));
+      }
       // log('proudct response : $response');
-      emit(GetDataSuccess(products));
+      search(query);
+      emit(GetDataSuccess(allProudcts));
     } on Failure catch (e) {
       log('Get Products Error: ${e.message}');
 
@@ -43,6 +42,21 @@ class HomeCubit extends Cubit<HomeState> {
           'Something went wrong. Please try again.',
         ),
       );
+    }
+  }
+
+  void search(String? query) {
+    if (query == null || query.trim().isEmpty) {
+      filterdProudcts.clear();
+      return;
+    }
+
+    filterdProudcts.clear();
+
+    for (var product in allProudcts) {
+      if (product.proudctName!.toLowerCase().contains(query.toLowerCase())) {
+        filterdProudcts.add(product);
+      }
     }
   }
 }
