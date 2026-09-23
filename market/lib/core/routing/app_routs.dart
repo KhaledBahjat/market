@@ -10,4 +10,6 @@ class AppRouts {
   static const storeScreen = '/store';
   static const favoriteScreen = '/favorite';
   static const profileScreen = '/profile';
+  static const searchView = '/searchView';
+
 }

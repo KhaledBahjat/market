@@ -8,9 +8,6 @@ final class HomeInitial extends HomeState {}
 final class GetDataLoading extends HomeState {}
 
 final class GetDataSuccess extends HomeState {
-  final List<ProudctModel> products;
-
-  GetDataSuccess(this.products);
 }
 
 final class GetDataError extends HomeState {
@@ -32,3 +29,14 @@ final class GetPopularError extends HomeState {
 
   GetPopularError(this.errorMessage);
 }
+
+
+abstract class SearchState {}
+
+class SearchInitial extends SearchState {}
+
+class SearchLoading extends SearchState {}
+
+class SearchSuccess extends SearchState {}
+
+class SearchEmpty extends SearchState {}

@@ -27,7 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
       // log('proudct response : $response');
       search(query);
-      emit(GetDataSuccess(allProudcts));
+      emit(GetDataSuccess());
     } on Failure catch (e) {
       log('Get Products Error: ${e.message}');
 

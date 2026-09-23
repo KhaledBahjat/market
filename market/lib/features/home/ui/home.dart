@@ -1,18 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/widgets/cousttom_search_feild.dart';
 import 'package:market/core/widgets/proudct_list.dart';
 import 'package:market/features/home/widgets/categorys_list.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final List<String> imgs = [
     'assets/imgs/market.jpg',
     'assets/imgs/market.jpg',
     'assets/imgs/test.jpg',
   ];
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +29,16 @@ class Home extends StatelessWidget {
       child: ListView(
         children: [
           Height(height: 15),
-          CustomSearchFeild(),
+          CustomSearchFeild(
+            controller: _searchController,
+            onPressed: () {
+              context.pushNamed(
+                AppRouts.searchView,
+                extra: _searchController.text,
+              );
+              _searchController.clear();
+            },
+          ),
           Height(height: 20),
 
           ClipRRect(
