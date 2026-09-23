@@ -8,6 +8,7 @@ import 'package:market/features/auth/nav_bar/ui/main_home.dart';
 import 'package:market/features/auth/ui/forget_password.dart';
 import 'package:market/features/auth/ui/sign_in.dart';
 import 'package:market/features/auth/ui/sign_up.dart';
+import 'package:market/features/home/ui/category_view.dart';
 import 'package:market/features/home/ui/search_view.dart';
 import 'package:market/features/profile/ui/edit_profile.dart';
 import 'package:market/features/profile/ui/my_order.dart';
@@ -37,6 +38,18 @@ class RouterGenerator {
     return AppTransitions.slideFromBottom(
       key: state.pageKey,
       child: SearchView(query: query),
+    );
+  },
+),
+   GoRoute(
+  path: AppRouts.categoryView,
+  name: AppRouts.categoryView,
+  pageBuilder: (context, state) {
+    final categoryName = state.extra as String? ?? '';
+
+    return AppTransitions.slideFromBottom(
+      key: state.pageKey,
+      child: CategoryView(categoryName: categoryName,),
     );
   },
 ),

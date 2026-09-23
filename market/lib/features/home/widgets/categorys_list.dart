@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market/core/helper/spacing.dart';
+import 'package:market/core/routing/app_routs.dart';
 import 'package:market/core/theme/app_colors.dart';
 
 class CategorysList extends StatelessWidget {
@@ -16,23 +18,31 @@ class CategorysList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundColor: AppColors.kPrimaryColor,
-                radius: 30,
-                child: Icon(
-                  categories[index].icon,
-                  color: AppColors.kWhiteColor,
-                  size: 30,
+          child: GestureDetector(
+            onTap: () {
+              context.pushNamed(
+                extra: categories[index].name,
+                AppRouts.categoryView,
+              );
+            },
+            child: Column(
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppColors.kPrimaryColor,
+                  radius: 30,
+                  child: Icon(
+                    categories[index].icon,
+                    color: AppColors.kWhiteColor,
+                    size: 30,
+                  ),
                 ),
-              ),
-              Height(height: 5),
-              Text(
-                categories[index].name,
-                style: TextStyle(fontSize: 15.sp),
-              ),
-            ],
+                Height(height: 5),
+                Text(
+                  categories[index].name,
+                  style: TextStyle(fontSize: 15.sp),
+                ),
+              ],
+            ),
           ),
         ),
         itemCount: categories.length,

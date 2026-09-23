@@ -11,5 +11,6 @@ class AppRouts {
   static const favoriteScreen = '/favorite';
   static const profileScreen = '/profile';
   static const searchView = '/searchView';
+  static const categoryView = '/categoryView';
 
 }
