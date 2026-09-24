@@ -16,7 +16,9 @@ class HomeCubit extends Cubit<HomeState> {
   final ApiServices api = ApiServices(DioClient());
 
   final List<ProudctModel> allProudcts = [];
+
   final List<ProudctModel> filterdProudcts = [];
+
   final List<ProudctModel> proudctsByCategory = [];
 
   Future<void> getProducts({
@@ -68,25 +70,37 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  void search(String? query) {
-    filterdProudcts.clear();
+  // ================= SEARCH =================
 
-    if (query == null || query.trim().isEmpty) {
-      return;
-    }
+void search(String? query) {
+  filterdProudcts.clear();
 
-    final searchQuery = query.trim().toLowerCase();
+  if (query == null || query.trim().isEmpty) {
+    emit(GetDataSuccess());
+    return;
+  }
 
-    for (final product in allProudcts) {
-      final productName =
-          product.proudctName?.trim().toLowerCase();
+  final searchQuery = query.trim().toLowerCase();
 
-      if (productName != null &&
-          productName.contains(searchQuery)) {
-        filterdProudcts.add(product);
-      }
+  for (final product in allProudcts) {
+    final productName =
+        product.proudctName?.trim().toLowerCase();
+
+    if (productName != null &&
+        productName.contains(searchQuery)) {
+      filterdProudcts.add(product);
     }
   }
+
+  log(
+    'Search: $query | '
+    'Results: ${filterdProudcts.length}',
+  );
+
+  emit(GetDataSuccess());
+}
+
+  // ================= CATEGORY =================
 
   void getProudctsByCategory(String? categoryName) {
     proudctsByCategory.clear();

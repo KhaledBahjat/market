@@ -13,16 +13,24 @@ class ProudctList extends StatelessWidget {
     this.categoryName,
   });
 
-  final String? query, categoryName;
+  final String? query;
+  final String? categoryName;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getProducts(query: query,categoryName: categoryName),
+      create: (_) => HomeCubit()
+        ..getProducts(
+          query: query,
+          categoryName: categoryName,
+        ),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           final HomeCubit cubit = context.read<HomeCubit>();
 
+          // =========================
           // Loading
+          // =========================
           if (state is GetDataLoading) {
             return Skeletonizer(
               enabled: true,
@@ -43,26 +51,43 @@ class ProudctList extends StatelessWidget {
             );
           }
 
+          // =========================
           // Error
+          // =========================
           if (state is GetDataError) {
             return Center(
-              child: Text(state.errorMessage),
+              child: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
             );
           }
 
+          // =========================
           // Success
+          // =========================
           if (state is GetDataSuccess) {
-            final List<ProudctModel> products = query != null
-                ? cubit.filterdProudcts
-                : categoryName != null
-                ? cubit.proudctsByCategory
-                : cubit.allProudcts;
+            final bool isSearch =
+                query != null && query!.trim().isNotEmpty;
 
+            final bool isCategory =
+                categoryName != null &&
+                categoryName!.trim().isNotEmpty;
+
+            final List<ProudctModel> products;
+
+            if (isSearch) {
+              products = cubit.filterdProudcts;
+            } else if (isCategory) {
+              products = cubit.proudctsByCategory;
+            } else {
+              products = cubit.allProudcts;
+            }
+
+            // =========================
+            // Empty
+            // =========================
             if (products.isEmpty) {
-              final bool isSearch = query != null && query!.trim().isNotEmpty;
-              final bool isCategory =
-                  categoryName != null && categoryName!.trim().isNotEmpty;
-
               return Center(
                 child: EmptyWidget(
                   icon: isSearch
@@ -84,6 +109,9 @@ class ProudctList extends StatelessWidget {
               );
             }
 
+            // =========================
+            // Products
+            // =========================
             return ListView.builder(
               itemCount: products.length,
               shrinkWrap: true,
